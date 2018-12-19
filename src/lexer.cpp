@@ -1,0 +1,287 @@
+#include "lexer.h"
+
+// TODO: get rid of iostream
+#include <iostream>
+
+namespace napkin {
+
+/**
+ * Returns a vector of tokens.
+ */
+std::vector<napkin::Token> Lexer::getTokens() {
+  return tokens;
+}
+
+/**
+ * Returns true if no errors occured during lexing.
+ */
+bool Lexer::safeToParse() {
+  return !hadError;
+}
+
+/**
+ * Calls lexToken and adds tokens to the vector of tokens until the end of the
+ * source code is reached.
+ */
+void Lexer::lexTokens() {
+  while(!isAtEnd()) {
+    // Since we are starting a new token update startPosition
+    startPosition = currentPosition;
+    try {
+      lexToken();
+    } catch (LexerException& e) {
+      // TODO: figure out proper column
+      std::cout << "ERROR: unexpected token at line: " << line
+                << " position: " << currentPosition << std::endl;
+    }
+  }
+  // Add the EOF token after we reach the end of the source code
+  tokens.push_back(Token(TOKEN_EOF, "", line, currentPosition));
+}
+
+/**
+ * Consumes and tries to match the next character.
+ */
+void Lexer::lexToken() {
+  char currentChar = advance();
+  switch (currentChar) {
+    case '(':
+      addToken(TOKEN_LEFT_PAREN, std::string(1, currentChar));
+      break;
+    case ')':
+      addToken(TOKEN_RIGHT_PAREN, std::string(1, currentChar));
+      break;
+    case '{':
+      addToken(TOKEN_LEFT_BRACE, std::string(1, currentChar));
+      break;
+    case '}':
+      addToken(TOKEN_RIGHT_BRACE, std::string(1, currentChar));
+      break;
+    case '[':
+      addToken(TOKEN_LEFT_BRACKET, std::string(1, currentChar));
+      break;
+    case ']':
+      addToken(TOKEN_RIGHT_BRACKET, std::string(1, currentChar));
+      break;
+    case '.':
+      addToken(TOKEN_DOT, std::string(1, currentChar));
+      break;
+    case ',':
+      addToken(TOKEN_COMMA, std::string(1, currentChar));
+      break;
+    case '\n':
+      addToken(TOKEN_NEWLINE, std::string(1, currentChar));
+      line++;
+      break;
+    case ';':
+      // Add a newline token for the parser but don't increment line number
+      addToken(TOKEN_NEWLINE, std::string(1, currentChar));
+      break;
+    // Ignore whitespace
+    case ' ':
+      break;
+    case '\r':
+      break;
+    case '\t':
+      break;
+
+    case '=':
+      if (match('=')) {
+        // It is actually a "==" token
+        addToken(TOKEN_EQUAL_EQUAL, std::string(1, currentChar));
+      } else {
+        addToken(TOKEN_EQUAL, std::string(1, currentChar));
+      }
+      break;
+    case '!':
+      if (match('=')) {
+        addToken(TOKEN_BANG_EQUAL, std::string(1, currentChar));
+      } else {
+        addToken(TOKEN_BANG, std::string(1, currentChar));
+      }
+      break;
+    case '<':
+      if (match('=')) {
+        // It is actually a "<=" token
+        addToken(TOKEN_LESS_EQUAL, std::string(1, currentChar));
+      } else {
+        addToken(TOKEN_LESS, std::string(1, currentChar));
+      }
+      break;
+    case '>':
+      if (match('=')) {
+        // It is actually a ">=" token
+        addToken(TOKEN_GREATER_EQUAL, std::string(1, currentChar));
+      } else {
+        addToken(TOKEN_GREATER, std::string(1, currentChar));
+      }
+      break;
+    case '+':
+      addToken(TOKEN_PLUS, std::string(1, currentChar));
+      break;
+    case '-':
+      addToken(TOKEN_MINUS, std::string(1, currentChar));
+      break;
+    case '*':
+      addToken(TOKEN_STAR, std::string(1, currentChar));
+      break;
+    case '/':
+      addToken(TOKEN_SLASH, std::string(1, currentChar));
+      break;
+
+    // hashtags comment out everything until the next newline
+    case '#':
+      while (peek(1) != '\n' && !isAtEnd()) {
+        advance();
+      }
+      break;
+
+    // Imaginary number literals begin with 'j'
+    case 'j':
+      if (isDigit(peek(1))) {
+        imNumber();
+      } else {
+        identifier();
+      }
+      break;
+
+    default:
+      // TODO: string literals
+      if (isDigit(currentChar)) {
+        number();
+      } else if (isChar(currentChar)) {
+        identifier();
+      } else {
+        // If character is not recognized, source contains lexical error
+        hadError = true;
+        LexerException lexerException;
+        throw lexerException; 
+      }
+  }
+}
+
+/**
+ * Lexes a number literal.
+ */
+void Lexer::number() {
+  while (isDigit(peek(1))) {
+    advance();
+  }
+  // Look for decimal point followed by more digits
+  if (peek(1) == '.' && isDigit(peek(2))) {
+    // Consume '.'
+    advance();
+    while (isDigit(peek(1))) {
+      // Consume remaining digits
+      advance();
+    }
+  }
+  addToken(TOKEN_NUMBER_LITERAL,
+           source.substr(startPosition, currentPosition - startPosition));
+}
+
+/**
+ * Lexes an imaginary number literal
+ */
+void Lexer::imNumber() {
+  // TODO: trailing 'j'
+  
+  // Consume 'j'
+  advance();
+  while (isDigit(peek(1))) {
+    advance();
+  }
+  // Look for decimal point followed by more digits
+  if (peek(1) == '.' && isDigit(peek(2))) {
+    // Consume '.'
+    advance();
+    while (isDigit(peek(1))) {
+      // Consume remaining digits
+      advance();
+    }
+  }
+  // Don't add the 'j' to the lexeme
+  addToken(TOKEN_IM_NUMBER_LITERAL,
+           source.substr(startPosition+1, currentPosition - startPosition));
+}
+
+/**
+ * Lexes an identifier
+ */
+void Lexer::identifier() {
+  while (isDigit(peek(1)) || isChar(peek(1))) {
+    advance();
+  }
+
+  std::string lexeme =
+      source.substr(startPosition, currentPosition - startPosition);
+
+  // Check if the lexeme is a keyword
+  TokenType tokenType = keywordToTokenTypeMap.lookup(lexeme);
+  if (tokenType != 0) {
+    addToken(tokenType, lexeme);
+  } else {
+    // If it's not a keyword, it's just a plain ol' identifier
+    addToken(TOKEN_IDENTIFIER, lexeme);
+  }
+}
+
+/**
+ * Returns the next character from source and updates currentPosition.
+ */
+char Lexer::advance() {
+  currentPosition++;
+  return source.at(currentPosition - 1);
+}
+
+/**
+ * Returns true if the next character is the expected character
+ * Advances currentPosition if match is successful.
+ */
+bool Lexer::match(char expected) {
+  if (isAtEnd()) return false;
+  if (source.at(currentPosition) != expected) return false;
+
+  currentPosition++;
+  return true;
+}
+
+/**
+ * Returns the n-th character ahead without advanceing currentPosition.
+ */
+char Lexer::peek(unsigned int n) {
+  if (currentPosition + n - 1 >= sourceLength) {
+    return '\0';
+  }
+  return source.at(currentPosition + n - 1);
+}
+
+/**
+ * Creates a new Token instance and appends it to the tokens vector.
+ */
+void Lexer::addToken(TokenType tokenType, std::string lexeme) {
+  Token newToken(tokenType, lexeme, line, startPosition);
+  tokens.push_back(newToken);
+}
+
+
+bool Lexer::isDigit(char c) {
+  return c >= '0' && c <= '9';
+}
+
+bool Lexer::isChar(char c) {
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
+/**
+ * Returns true if last character has been consumed
+ */
+bool Lexer::isAtEnd() {
+  if (currentPosition >= sourceLength) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+} // namespace napkin

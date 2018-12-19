@@ -1,0 +1,40 @@
+# Everything is a complex double
+# "j" is reserved for the imaginary unit
+x = 10**2
+y = 3.22+j4.02
+# Constants like pi, euler
+z = x + y + pi + euler
+
+# angles are special Angle objects
+w = polar(440, rad(2*pi))
+w = polar(440, deg(360))
+
+# Get real/imaginary parts
+re(w)
+im(w)
+
+output(angle(w))
+output(mag(w))
+
+# arrays
+v = [1, 2, 3]
+A = [[1, 2],
+     [3, 4],
+     [5, 6]]
+
+# 0 indexing by row, col
+element = A[0][2]
+
+# Matrix/vector multiplication
+result = A@v
+
+# Functions
+add(x, y) = x + y # implicit return for single line functions
+multiply(x, y) = {
+  product = x*y
+  return product
+}
+fact(n) = {
+  if n == 0 { return 1 }
+  return n * fact(n - 1)
+}
