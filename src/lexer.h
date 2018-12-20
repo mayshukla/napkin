@@ -39,6 +39,7 @@ private:
   void number();
   void imNumber();
   void identifier();
+  void stringLiteral();
   char advance();
   bool match(char expected);
   char peek(unsigned int n);

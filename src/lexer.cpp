@@ -136,6 +136,10 @@ void Lexer::lexToken() {
       }
       break;
 
+    case '"':
+      stringLiteral();
+      break;
+
     // Imaginary number literals begin with 'j'
     case 'j':
       if (isDigit(peek(1))) {
@@ -155,7 +159,7 @@ void Lexer::lexToken() {
         // If character is not recognized, source contains lexical error
         hadError = true;
         LexerException lexerException;
-        throw lexerException; 
+        throw lexerException;
       }
   }
 }
@@ -224,6 +228,33 @@ void Lexer::identifier() {
     // If it's not a keyword, it's just a plain ol' identifier
     addToken(TOKEN_IDENTIFIER, lexeme);
   }
+}
+
+/**
+ * Lexes a string literal.
+ */
+void Lexer::stringLiteral() {
+  // Consume the opening '"'
+  advance();
+
+  while (peek(1) != '"' && !isAtEnd()) {
+    if (peek(1) == '\n') {
+      line++;
+    }
+    advance();
+  }
+
+  if (isAtEnd()) {
+    hadError = true;
+    std::cout << "ERROR: unterminated string." << std::endl;
+    LexerException lexerException;
+    throw lexerException;
+  }
+
+  // Consume the closing '"'
+  advance();
+  // Don't add the leading and trailing '"'
+  addToken(TOKEN_STRING_LITERAL, source.substr(startPosition + 1, currentPosition - startPosition - 2));
 }
 
 /**
