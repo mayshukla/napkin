@@ -150,7 +150,6 @@ void Lexer::lexToken() {
       break;
 
     default:
-      // TODO: string literals
       if (isDigit(currentChar)) {
         number();
       } else if (isChar(currentChar)) {
