@@ -1,5 +1,5 @@
-#ifndef NAPKIN_ASTPRINTER_H
-#define NAPKIN_ASTPRINTER_H
+#ifndef NAPKIN_ASTPRINTER_H_
+#define NAPKIN_ASTPRINTER_H_
 
 #include "ASTVisitor.h"
 #include "AST.h"
