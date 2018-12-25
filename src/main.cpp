@@ -4,6 +4,25 @@
 
 #include "token.h"
 #include "lexer.h"
+#include "AST.h"
+#include "ASTPrinter.h"
+
+void testASTPrinter() {
+  napkin::ASTPrinter astprinter;
+
+  // Construct tokens
+  napkin::Token _operator(napkin::TOKEN_PLUS, "+", 1, 1);
+  napkin::Token leftNum(napkin::TOKEN_RE, "32", 2, 2);
+  napkin::Token rightNum(napkin::TOKEN_IM, "16", 3, 3);
+
+  // Construct expressions
+  napkin::RealNumber left(leftNum);
+  napkin::ImaginaryNumber right(rightNum);
+  napkin::BinaryExpr binaryExpr(_operator, &left, &right);
+
+  // Attempt to print
+  std::cout << astprinter.visitBinaryExpr(&binaryExpr) << std::endl;
+}
 
 void testLexer() {
   std::string source =
@@ -25,6 +44,6 @@ void testToken() {
 }
 
 int main() {
-  testLexer();
+  testASTPrinter();
   return 0;
 }

@@ -1,0 +1,25 @@
+#ifndef NAPKIN_ASTPRINTER_H
+#define NAPKIN_ASTPRINTER_H
+
+#include "ASTVisitor.h"
+#include "AST.h"
+
+namespace napkin {
+
+/**
+ * Class to print AST in a lisp-like Polish notation for debugging purposes
+ */
+class ASTPrinter : public ASTVisitor<std::string> {
+public:
+  virtual std::string visitBinaryExpr(BinaryExpr *expr);
+  virtual std::string visitGrouping(Grouping *expr);
+  virtual std::string visitUnaryExpr(UnaryExpr *expr);
+  virtual std::string visitIdentifier(Identifier *expr);
+  virtual std::string visitRealNumber(RealNumber *expr);
+  virtual std::string visitImaginaryNumber(ImaginaryNumber *expr);
+  virtual std::string visitString(String *expr);
+};
+
+} // namespace napkin
+
+#endif
