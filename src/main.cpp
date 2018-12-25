@@ -33,7 +33,7 @@ void testLexer() {
   std::vector<napkin::Token> tokens = lexer.getTokens();
   for (unsigned int i = 0; i < tokens.size(); i++) {
     std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
-              << std::endl;
+              << " at: " << tokens[i].getColumn() << std::endl;
   }
   std::cout << lexer.safeToParse() << std::endl;
 }
@@ -44,6 +44,6 @@ void testToken() {
 }
 
 int main() {
-  testASTPrinter();
+  testLexer();
   return 0;
 }

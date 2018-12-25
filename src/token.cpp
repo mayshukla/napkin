@@ -141,8 +141,8 @@ unsigned int Token::getLine() {
   return this->line;
 }
 
-unsigned int Token::getPosition() {
-  return this->position;
+unsigned int Token::getColumn() {
+  return this->column;
 }
 
 TokenType Token::getTokenType() {

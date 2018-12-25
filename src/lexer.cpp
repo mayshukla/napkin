@@ -71,7 +71,7 @@ void Lexer::lexToken() {
       break;
     case '\n':
       addToken(TOKEN_NEWLINE, std::string(1, currentChar));
-      line++;
+      nextLine();
       break;
     case ';':
       // Add a newline token for the parser but don't increment line number
@@ -238,7 +238,7 @@ void Lexer::stringLiteral() {
 
   while (peek(1) != '"' && !isAtEnd()) {
     if (peek(1) == '\n') {
-      line++;
+      nextLine();
     }
     advance();
   }
@@ -261,6 +261,7 @@ void Lexer::stringLiteral() {
  */
 char Lexer::advance() {
   currentPosition++;
+  column++;
   return source.at(currentPosition - 1);
 }
 
@@ -290,8 +291,16 @@ char Lexer::peek(unsigned int n) {
  * Creates a new Token instance and appends it to the tokens vector.
  */
 void Lexer::addToken(TokenType tokenType, std::string lexeme) {
-  Token newToken(tokenType, lexeme, line, startPosition);
+  Token newToken(tokenType, lexeme, line, column);
   tokens.push_back(newToken);
+}
+
+/**
+ * Increments line number and sets column to zero.
+ */
+void Lexer::nextLine() {
+  line++;
+  column = 0;
 }
 
 

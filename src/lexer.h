@@ -31,6 +31,7 @@ private:
   unsigned int startPosition = 0; // Index of start of current token in line
   unsigned int currentPosition = 0; // Index of current character
   unsigned int line = 1; // Line number the lexer is on (for error messages)
+  unsigned int column = 0; // Position from start of current line
   bool hadError = false;
   KeywordToTokenTypeMap keywordToTokenTypeMap;
 
@@ -44,6 +45,7 @@ private:
   bool match(char expected);
   char peek(unsigned int n);
   void addToken(TokenType tokenType, std::string lexeme);
+  void nextLine();
   bool isDigit(char c);
   bool isChar(char c);
   bool isAtEnd();

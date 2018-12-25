@@ -89,20 +89,20 @@ std::string tokenTypeAsString(TokenType tokenType);
 class Token {
 public:
   Token(TokenType t_tokenType, std::string t_lexeme, unsigned int t_line,
-        unsigned int t_position)
+        unsigned int t_column)
       : tokenType(t_tokenType), lexeme(t_lexeme), line(t_line),
-        position(t_position) {}
+        column(t_column) {}
   TokenType getTokenType();
   std::string tokenTypeAsString();
   unsigned int getLine();
-  unsigned int getPosition();
+  unsigned int getColumn();
   std::string getLexeme();
 
 private:
   TokenType tokenType;
   std::string lexeme;
   unsigned int line;
-  unsigned int position;
+  unsigned int column; // position from start of line
 };
 
 } // namespace napkin
