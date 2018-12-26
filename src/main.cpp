@@ -6,6 +6,24 @@
 #include "lexer.h"
 #include "AST.h"
 #include "ASTPrinter.h"
+#include "parser.h"
+
+void testParser() {
+  std::string source = "1 + j0.005 !=j45 - 234 * euler <= 100";
+  napkin::Lexer lexer(source);
+  std::vector<napkin::Token> tokens = lexer.getTokens();
+
+
+  napkin::Parser parser(tokens);
+  for (unsigned int i = 0; i < tokens.size(); i++) {
+    std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
+              << " at: " << tokens[i].getColumn() << std::endl;
+  }
+  napkin::Expr *expr = parser.parse(); // seg fault
+
+  napkin::ASTPrinter astprinter;
+  std::cout << astprinter.visitExpr(expr) << std::endl;
+}
 
 void testASTPrinter() {
   napkin::ASTPrinter astprinter;
@@ -44,6 +62,6 @@ void testToken() {
 }
 
 int main() {
-  testLexer();
+  testParser();
   return 0;
 }

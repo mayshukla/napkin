@@ -11,6 +11,7 @@ namespace napkin {
  */
 class ASTPrinter : public ASTVisitor<std::string> {
 public:
+  virtual std::string visitExpr(Expr *expr);
   virtual std::string visitBinaryExpr(BinaryExpr *expr);
   virtual std::string visitGrouping(Grouping *expr);
   virtual std::string visitUnaryExpr(UnaryExpr *expr);
@@ -18,6 +19,8 @@ public:
   virtual std::string visitRealNumber(RealNumber *expr);
   virtual std::string visitImaginaryNumber(ImaginaryNumber *expr);
   virtual std::string visitString(String *expr);
+  virtual std::string visitBoolean(Boolean *expr);
+  virtual std::string visitKeywordConstant(KeywordConstant *expr);
 };
 
 } // namespace napkin

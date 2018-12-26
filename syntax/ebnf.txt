@@ -1,0 +1,22 @@
+# Here I define the grammar of napkin using something like extended backus-naur
+# form.
+#
+# I have defined in such a way that I can implement it using a recursive-descent
+# parser.
+
+# Syntax Grammar
+expr = equality
+equality = comparison (("==" | "!=") comparision)*
+comparison = addition (("<=" | ">=" | "<" | ">" addition)*
+addition = multiplication (("+" | "-") multiplication)*
+multiplication = unary (("*" | "/") unary)*
+unary = ("!" | "-" )? unary | primary
+primary = keyword | grouping | literal | identifier
+grouping = "(" expr ")"
+
+# Lexical Grammar
+keyword = "true" | "false" | "output" | "input" | ...
+identifier = <letter or underscore> <letter, number, or underscore>*
+literal = string | number
+string = '"' <text> '"'
+number = ("j")? <valid floating point number>

@@ -1,7 +1,7 @@
 # Based on https://hiltmon.com/blog/2013/07/03/a-simple-c-plus-plus-project-structure/
 
 CC = clang++
-CFLAGS = -std=c++11 -Wall -Wshadow -Werror
+CFLAGS = -std=c++11 -Wall -Wshadow -Werror -g
 SRCDIR = src
 BUILDDIR = build
 TARGETDIR = bin

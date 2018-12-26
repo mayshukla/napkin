@@ -13,8 +13,9 @@ w = polar(440, deg(360))
 re(w)
 im(w)
 
-output(angle(w))
-output(mag(w))
+# Get angle/magnitude
+angleOf(w)
+mag(w)
 
 # arrays
 v = [1, 2, 3]

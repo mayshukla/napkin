@@ -2,6 +2,10 @@
 
 namespace napkin {
 
+std::string ASTPrinter::visitExpr(Expr *expr) {
+  return expr->accept(this);
+}
+
 std::string ASTPrinter::visitBinaryExpr(BinaryExpr* expr) {
   std::string _operator = expr->_operator.getLexeme();
   std::string left = expr->left->accept(this);
@@ -34,6 +38,14 @@ std::string ASTPrinter::visitImaginaryNumber(ImaginaryNumber *expr) {
 }
 
 std::string ASTPrinter::visitString(String *expr) {
+  return expr->token.getLexeme();
+}
+
+std::string ASTPrinter::visitBoolean(Boolean *expr) {
+  return expr->token.getLexeme();
+}
+
+std::string ASTPrinter::visitKeywordConstant(KeywordConstant *expr) {
   return expr->token.getLexeme();
 }
 

@@ -53,6 +53,7 @@ enum TokenType {
   TOKEN_RE,
   TOKEN_IM,
   TOKEN_MAG,
+  TOKEN_ANGLEOF,
   TOKEN_PI,
   TOKEN_EULER,
 
@@ -73,6 +74,7 @@ public:
       {"re" , TOKEN_RE},
       {"im" , TOKEN_IM},
       {"mag" , TOKEN_MAG},
+      {"angleOf" , TOKEN_ANGLEOF},
       {"pi" , TOKEN_PI},
       {"euler" , TOKEN_EULER},
     };

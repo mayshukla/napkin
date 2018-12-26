@@ -121,6 +121,9 @@ std::string tokenTypeAsString(TokenType tokenType) {
   case TOKEN_IM:
     return "TOKEN_IM";
     break;
+  case TOKEN_ANGLEOF:
+    return "TOKEN_ANGLEOF";
+    break;
   case TOKEN_MAG:
     return "TOKEN_MAG";
     break;

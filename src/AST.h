@@ -135,6 +135,31 @@ public:
   Token token;
 };
 
+/**
+ * Boolean literals.
+ */
+class Boolean : public Expr {
+public:
+  Boolean(Token t_token) : token(t_token){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitBoolean(this);
+  }
+
+  Token token;
+};
+
+/**
+ * Keywords that function as constants (e.g. "pi", "euler", etc)
+ */
+class KeywordConstant : public Expr {
+public:
+  KeywordConstant(Token t_token) : token(t_token){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitKeywordConstant(this);
+  }
+
+  Token token;
+};
 
 } // namespace napkin
 
