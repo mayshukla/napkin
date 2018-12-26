@@ -150,6 +150,9 @@ public:
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
     return visitor->visitString(this);
   }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitString(this);
+  }
 
   Token token;
 };
@@ -163,6 +166,9 @@ public:
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
     return visitor->visitBoolean(this);
   }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitBoolean(this);
+  }
 
   Token token;
 };
@@ -174,6 +180,9 @@ class KeywordConstant : public Expr {
 public:
   KeywordConstant(Token t_token) : token(t_token){};
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitKeywordConstant(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
     return visitor->visitKeywordConstant(this);
   }
 
