@@ -88,14 +88,17 @@ void Lexer::lexToken() {
     case '=':
       if (match('=')) {
         // It is actually a "==" token
-        addToken(TOKEN_EQUAL_EQUAL, std::string(1, currentChar));
+        addToken(TOKEN_EQUAL_EQUAL,
+                 source.substr(startPosition, currentPosition - startPosition));
       } else {
         addToken(TOKEN_EQUAL, std::string(1, currentChar));
       }
       break;
     case '!':
       if (match('=')) {
-        addToken(TOKEN_BANG_EQUAL, std::string(1, currentChar));
+        // It is actually a "!=" token
+        addToken(TOKEN_EQUAL_EQUAL,
+                 source.substr(startPosition, currentPosition - startPosition));
       } else {
         addToken(TOKEN_BANG, std::string(1, currentChar));
       }
@@ -103,7 +106,8 @@ void Lexer::lexToken() {
     case '<':
       if (match('=')) {
         // It is actually a "<=" token
-        addToken(TOKEN_LESS_EQUAL, std::string(1, currentChar));
+        addToken(TOKEN_EQUAL_EQUAL,
+                 source.substr(startPosition, currentPosition - startPosition));
       } else {
         addToken(TOKEN_LESS, std::string(1, currentChar));
       }
@@ -111,7 +115,8 @@ void Lexer::lexToken() {
     case '>':
       if (match('=')) {
         // It is actually a ">=" token
-        addToken(TOKEN_GREATER_EQUAL, std::string(1, currentChar));
+        addToken(TOKEN_EQUAL_EQUAL,
+                 source.substr(startPosition, currentPosition - startPosition));
       } else {
         addToken(TOKEN_GREATER, std::string(1, currentChar));
       }

@@ -9,7 +9,7 @@
 #include "parser.h"
 
 void testParser() {
-  std::string source = "1 + j0.005 !=j45 - 234 * euler <= 100";
+  std::string source = "1 + j0.005 != 2 + j0.123 > 10 ==j45 - 234 * euler <= 100";
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();
 
