@@ -17,6 +17,7 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     return nAdd(left, right);
     break;
   case TOKEN_MINUS:
+    return nSubtract(left, right);
     break;
   case TOKEN_STAR:
     break;
@@ -50,6 +51,21 @@ NObject *Interpreter::visitGrouping(Grouping *expr) {
 }
 
 NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
+  TokenType _operator = expr->_operator.getTokenType();
+  NObject  *right = expr->right->accept(this);
+
+  switch (_operator) {
+  case TOKEN_MINUS:
+    return nNegate(right);
+    break;
+  default:
+    // should be unreachable if parser is set up correctly
+    throw "Error: not a unary operator.";
+    return nullptr;
+    break;
+  }
+
+  // Unreachable
   return nullptr;
 }
 
@@ -62,7 +78,7 @@ NObject *Interpreter::visitRealNumber(RealNumber *expr) {
 }
 
 NObject *Interpreter::visitImaginaryNumber(ImaginaryNumber *expr) {
-  return nullptr;
+  return new NComplexNumber(0, expr->value);
 }
 
 NObject *Interpreter::visitString(String *expr) {

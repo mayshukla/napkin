@@ -20,8 +20,8 @@ std::string ASTPrinter::visitGrouping(Grouping *expr) {
 
 std::string ASTPrinter::visitUnaryExpr(UnaryExpr *expr) {
   std::string _operator = expr->_operator.getLexeme();
-  std::string operand = expr->operand->accept(this);
-  return "(" + _operator + " " + operand + ")";
+  std::string right = expr->right->accept(this);
+  return "(" + _operator + " " + right + ")";
 }
 
 std::string ASTPrinter::visitIdentifier(Identifier *expr) {

@@ -11,6 +11,8 @@
 namespace napkin {
 
 NObject *nAdd(NObject *left, NObject* right);
+NObject *nSubtract(NObject *left, NObject* right);
+NObject *nNegate(NObject *right);
 
 } // namespace napkin
 

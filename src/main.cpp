@@ -10,7 +10,7 @@
 #include "interpreter.h"
 
 void testInterpreter() {
-  std::string source = "1.23 + 9.7 +2";
+  std::string source = "j1.23 + 9.7 +2 +- j3";
 
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();

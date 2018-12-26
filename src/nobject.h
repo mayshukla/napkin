@@ -58,6 +58,12 @@ public:
   }
   double re;
   double im;
+
+  virtual std::string repr() {
+    std::string re_str = std::to_string(re);
+    std::string im_str = std::to_string(im);
+    return re_str + " + j" + im_str;
+  }
 };
 
 /**

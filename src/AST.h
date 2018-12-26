@@ -70,8 +70,8 @@ public:
  */
 class UnaryExpr : public Expr {
 public:
-  UnaryExpr(Token t_operator, Expr *t_operand)
-      : _operator(t_operator), operand(t_operand){};
+  UnaryExpr(Token t_operator, Expr *t_right)
+      : _operator(t_operator), right(t_right){};
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
     return visitor->visitUnaryExpr(this);
   }
@@ -80,7 +80,7 @@ public:
   }
 
   Token _operator;
-  Expr *operand;
+  Expr *right;
 };
 
 /**
