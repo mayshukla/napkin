@@ -30,9 +30,8 @@ void Lexer::lexTokens() {
     try {
       lexToken();
     } catch (LexerException& e) {
-      // TODO: figure out proper column
       std::cout << "ERROR: unexpected token at line: " << line
-                << " position: " << currentPosition << std::endl;
+                << " column: " << column << std::endl;
     }
   }
   // Add the EOF token after we reach the end of the source code
