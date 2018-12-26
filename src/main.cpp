@@ -7,6 +7,26 @@
 #include "AST.h"
 #include "ASTPrinter.h"
 #include "parser.h"
+#include "interpreter.h"
+
+void testInterpreter() {
+  std::string source = "1.23 + 9.7 +2";
+
+  napkin::Lexer lexer(source);
+  std::vector<napkin::Token> tokens = lexer.getTokens();
+  for (unsigned int i = 0; i < tokens.size(); i++) {
+    std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
+              << " at: " << tokens[i].getColumn() << std::endl;
+  }
+
+  napkin::Parser parser(tokens);
+  napkin::Expr *expr = parser.parse();
+  napkin::ASTPrinter astprinter;
+  std::cout << astprinter.visitExpr(expr) << std::endl;
+
+  napkin::Interpreter interpreter;
+  std::cout << interpreter.visitExpr(expr)->repr() << std::endl;
+}
 
 void testParser() {
   std::string source = "  1 + j0.005 != 10 * -(2 + j0.123) > 10 ==j45 - 234 * euler <= 100";
@@ -19,7 +39,7 @@ void testParser() {
     std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
               << " at: " << tokens[i].getColumn() << std::endl;
   }
-  napkin::Expr *expr = parser.parse(); // seg fault
+  napkin::Expr *expr = parser.parse();
 
   napkin::ASTPrinter astprinter;
   std::cout << astprinter.visitExpr(expr) << std::endl;
@@ -62,6 +82,6 @@ void testToken() {
 }
 
 int main() {
-  testParser();
+  testInterpreter();
   return 0;
 }

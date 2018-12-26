@@ -5,6 +5,7 @@
 
 #include "token.h"
 #include "ASTVisitor.h"
+#include "nobject.h"
 
 /**
  * Abstract Syntax Tree Classes
@@ -26,8 +27,8 @@ class Stmt {
 class Expr {
 public:
   virtual std::string accept(ASTVisitor<std::string> *visitor) = 0;
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) = 0;
 };
-
 
 /**
  * Base class for binary expressions.
@@ -37,6 +38,9 @@ public:
   BinaryExpr(Token t_operator, Expr *t_left, Expr *t_right)
       : _operator(t_operator), left(t_left), right(t_right){};
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitBinaryExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
     return visitor->visitBinaryExpr(this);
   }
 
@@ -54,6 +58,9 @@ public:
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
     return visitor->visitGrouping(this);
   }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitGrouping(this);
+  }
 
   Expr *contents;
 };
@@ -66,6 +73,9 @@ public:
   UnaryExpr(Token t_operator, Expr *t_operand)
       : _operator(t_operator), operand(t_operand){};
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitUnaryExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
     return visitor->visitUnaryExpr(this);
   }
 
@@ -82,6 +92,9 @@ public:
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
     return visitor->visitIdentifier(this);
   }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitIdentifier(this);
+  }
 
   Token token;
 };
@@ -95,6 +108,9 @@ public:
     value = std::stod(token.getLexeme());
   };
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitRealNumber(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
     return visitor->visitRealNumber(this);
   }
 
@@ -113,6 +129,9 @@ public:
     value = std::stod(token.getLexeme());
   };
   virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitImaginaryNumber(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
     return visitor->visitImaginaryNumber(this);
   }
 

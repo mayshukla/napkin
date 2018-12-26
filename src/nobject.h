@@ -1,5 +1,5 @@
-#ifndef NAPKIN_NOBJECTS_H_
-#define NAPKIN_NOBJECTS_H_
+#ifndef NAPKIN_NOBJECT_H_
+#define NAPKIN_NOBJECT_H_
 
 #include <string>
 
@@ -24,9 +24,13 @@ enum NType {
  */
 class NObject {
 public:
-  static const NType type; // Store runtime type information
+  virtual NType getType() {
+    return type;
+  }
   // Like python's __repr__()
   virtual std::string repr() = 0;
+protected:
+  NType type; // Store runtime type information
 };
 
 /**
@@ -34,9 +38,14 @@ public:
  */
 class NRealNumber : public NObject {
 public:
-  NRealNumber(double t_value) : value(t_value){};
-  static const NType type = N_REAL_NUMBER;
+  NRealNumber(double t_value) : value(t_value) {
+    type = N_REAL_NUMBER;
+  };
   double value;
+
+  virtual std::string repr() {
+    return std::to_string(value);
+  }
 };
 
 /**
@@ -44,8 +53,9 @@ public:
  */
 class NComplexNumber : public NObject {
 public:
-  NComplexNumber(double t_re, double t_im) : re(t_re), im(t_im){};
-  static const NType type = N_COMPLEX_NUMBER;
+  NComplexNumber(double t_re, double t_im) : re(t_re), im(t_im) {
+    type = N_COMPLEX_NUMBER;
+  }
   double re;
   double im;
 };
@@ -55,8 +65,9 @@ public:
  */
 class NBoolean : public NObject {
 public:
-  NBoolean(bool t_value) : value(t_value){};
-  static const NType type = N_BOOLEAN;
+  NBoolean(bool t_value) : value(t_value) {
+    type = N_BOOLEAN;
+  }
   bool value;
 };
 
@@ -65,8 +76,9 @@ public:
  */
 class NString : public NObject {
 public:
-  NString(std::string t_value) : value(t_value){};
-  static const NType type = N_STRING;
+  NString(std::string t_value) : value(t_value) {
+    type = N_STRING;
+  }
   std::string value;
 };
 
