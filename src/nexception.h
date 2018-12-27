@@ -24,6 +24,14 @@ public:
   };
 };
 
+class ParserException : public NException {
+public:
+  ParserException(std::string t_message) : NException(t_message) {
+    std::string message_prefix = "Napkin ParserException: ";
+    message = message_prefix + message;
+  };
+};
+
 class RuntimeException : public NException {
 public:
   RuntimeException(std::string t_message) : NException(t_message) {
