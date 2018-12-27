@@ -65,6 +65,7 @@ class KeywordToTokenTypeMap {
 public:
   KeywordToTokenTypeMap() {
     map = {
+      {"j" , TOKEN_J},
       {"true" , TOKEN_TRUE},
       {"false" , TOKEN_FALSE},
       {"output" , TOKEN_OUTPUT},

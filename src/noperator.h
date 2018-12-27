@@ -13,6 +13,8 @@ namespace napkin {
 NObject *nAdd(NObject *left, NObject* right);
 NObject *nSubtract(NObject *left, NObject* right);
 NObject *nNegate(NObject *right);
+NObject *nMultiply(NObject *left, NObject *right);
+NObject *nJ(NObject *right);
 
 } // namespace napkin
 

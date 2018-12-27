@@ -20,6 +20,7 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     return nSubtract(left, right);
     break;
   case TOKEN_STAR:
+    return nMultiply(left, right);
     break;
   case TOKEN_SLASH:
     break;
@@ -47,7 +48,7 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
 }
 
 NObject *Interpreter::visitGrouping(Grouping *expr) {
-  return nullptr;
+  return expr->contents->accept(this);
 }
 
 NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
@@ -57,6 +58,10 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
   switch (_operator) {
   case TOKEN_MINUS:
     return nNegate(right);
+    break;
+  case TOKEN_J:
+    // 'j' may be used as an operator meaning "multiply by j-1"
+    //return nJ(right);
     break;
   default:
     // should be unreachable if parser is set up correctly

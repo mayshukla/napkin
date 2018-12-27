@@ -114,8 +114,9 @@ Expr* Parser::primary() {
 
   // Keywords that act an unary operators
   // e.g. "output", "mag"
-  if (match(TOKEN_OUTPUT) || match(TOKEN_INPUT) || match(TOKEN_MAG) ||
-      match(TOKEN_RE) || match(TOKEN_IM) || match(TOKEN_ANGLEOF)) {
+  if (match(TOKEN_J) || match(TOKEN_OUTPUT) || match(TOKEN_INPUT) ||
+      match(TOKEN_MAG) || match(TOKEN_RE) || match(TOKEN_IM) ||
+      match(TOKEN_ANGLEOF)) {
     Token _operator = previous();
     // TODO: should this be unary or primary?
     Expr *right = unary();
