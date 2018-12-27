@@ -1,5 +1,5 @@
-#ifndef NAPKIN_RUNTIME_EXCEPTION_H_
-#define NAPKIN_RUNTIME_EXCEPTION_H_
+#ifndef NAPKIN_NEXCEPTION_H_
+#define NAPKIN_NEXCEPTION_H_
 
 #include <exception>
 #include <string>
