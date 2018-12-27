@@ -244,6 +244,14 @@ void Lexer::identifier() {
  * Lexes a string literal.
  */
 void Lexer::stringLiteral() {
+  // If next character is '"', it is an empty string
+  // TODO: make this more clear
+  if (peek(1) == '"') {
+    advance();
+    addToken(TOKEN_STRING_LITERAL, "");
+    return;
+  }
+
   // Consume the opening '"'
   advance();
 
