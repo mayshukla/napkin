@@ -12,6 +12,7 @@
 
 namespace napkin {
 
+// Operators
 NObject *nAdd(NObject *left, NObject* right);
 NObject *nSubtract(NObject *left, NObject* right);
 NObject *nNegate(NObject *right);
@@ -19,6 +20,10 @@ NObject *nMultiply(NObject *left, NObject *right);
 NObject *nJ(NObject *right);
 NObject *nDivide(NObject *left, NObject *right);
 NObject *nNot(NObject *right);
+NObject *nLogicalEqual(NObject *left, NObject *right);
+NObject *nLogicalNotEqual(NObject *left, NObject *right);
+
+// Helpers
 bool isTruthy(NObject *object);
 
 } // namespace napkin

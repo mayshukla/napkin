@@ -293,4 +293,34 @@ bool isTruthy(NObject *object) {
   }
 }
 
+/**
+ * Returns NBoolean with value true if left and right are considered equal
+ */
+NObject *nLogicalEqual(NObject *left, NObject *right) {
+  NType left_type = left->getType();
+  NType right_type = right->getType();
+
+  // Either operand is boolean
+  if (left_type == N_BOOLEAN || right_type == N_BOOLEAN) {
+    bool left_value = isTruthy(left);
+    bool right_value = isTruthy(right);
+    if (left_value ==  right_value) {
+      return new NBoolean(true);
+    }
+    return new NBoolean(false);
+  }
+  
+  // Unreachable
+  return nullptr;
+}
+
+/**
+ * Same as nLogicalEqual
+ */
+NObject *nLogicalNotEqual(NObject *left, NObject *right) {
+  NObject *temp_result = nLogicalEqual(left, right);
+  bool areEqual = ((NBoolean *)temp_result)->value;
+  return new NBoolean(!areEqual);
+}
+
 } // namespace napkin

@@ -13,7 +13,8 @@ void testInterpreter() {
   //std::string source = "j1.23 + 9.7*2 + -j(-3+j1)";
   //std::string source = "1 + (1+j1.5)*(3-j5)";
   //std::string source = "(1+j1)/2";
-  std::string source = "!\"\"";
+  std::string source = "\"\" != !false";
+  //std::string source = "false!=true";
 
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();

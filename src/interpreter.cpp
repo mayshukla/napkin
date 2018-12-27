@@ -26,8 +26,10 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     return nDivide(left, right);
     break;
   case TOKEN_EQUAL_EQUAL:
+    return nLogicalEqual(left, right);
     break;
   case TOKEN_BANG_EQUAL:
+    return nLogicalNotEqual(left, right);
     break;
   case TOKEN_LESS_EQUAL:
     break;
