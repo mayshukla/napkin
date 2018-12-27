@@ -23,6 +23,7 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     return nMultiply(left, right);
     break;
   case TOKEN_SLASH:
+    return nDivide(left, right);
     break;
   case TOKEN_EQUAL_EQUAL:
     break;
@@ -55,6 +56,7 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
   TokenType _operator = expr->_operator.getTokenType();
   NObject  *right = expr->right->accept(this);
 
+  // TODO: implement all unary operators
   switch (_operator) {
   case TOKEN_MINUS:
     return nNegate(right);
