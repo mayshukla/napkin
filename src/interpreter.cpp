@@ -60,8 +60,8 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
     return nNegate(right);
     break;
   case TOKEN_J:
-    // 'j' may be used as an operator meaning "multiply by j-1"
-    //return nJ(right);
+    // 'j' may be used as an operator meaning "multiply by j1"
+    return nJ(right);
     break;
   default:
     // should be unreachable if parser is set up correctly

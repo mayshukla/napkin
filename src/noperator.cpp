@@ -148,4 +148,18 @@ NObject *nMultiply(NObject *left, NObject *right) {
   return nullptr;
 }
 
+/**
+ * Multiplies a number by 'j1'
+ */
+NObject *nJ(NObject *right) {
+  // Not a number
+  if (right->getType() != N_REAL_NUMBER &&
+      right->getType() != N_COMPLEX_NUMBER) {
+    RuntimeException ex("Invalid operand for unary negation.");
+    throw ex;
+  }
+  NComplexNumber multiplier(0, 1);
+  return nMultiply(&multiplier, right);
+}
+
 } // namespace napkin
