@@ -12,7 +12,7 @@ NObject *nAdd(NObject *left, NObject* right) {
        left->getType() != N_COMPLEX_NUMBER) ||
       (right->getType() != N_REAL_NUMBER &&
        right->getType() != N_COMPLEX_NUMBER)) {
-    RuntimeException ex;
+    RuntimeException ex("Invalid operands for addition/subtraction.");
     throw ex;
   }
 
@@ -67,7 +67,7 @@ NObject *nNegate(NObject *right) {
   // Not a number
   if (right->getType() != N_REAL_NUMBER &&
       right->getType() != N_COMPLEX_NUMBER) {
-    RuntimeException ex;
+    RuntimeException ex("Invalid operand for unary negation.");
     throw ex;
   }
 

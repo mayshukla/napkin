@@ -9,27 +9,27 @@ namespace napkin {
 class NException : public std::exception {
 public:
   NException(std::string t_message) : message(t_message) {};
+  virtual const char* what() const throw() {
+    return message.c_str();
+  }
 protected:
   std::string message;
 };
 
 class LexerException: public NException {
 public:
-  LexerException(std::string t_message) : NException(t_message){};
-  virtual const char* what() const throw() {
-    std::string message_builder = "Napkin LexerException: " + message;
-    return message_builder.c_str();
-  }
-private:
+  LexerException(std::string t_message) : NException(t_message){
+    std::string message_prefix = "Napkin LexerException: ";
+    message = message_prefix + message;
+  };
 };
 
 class RuntimeException : public NException {
 public:
-  RuntimeException(std::string t_message) : NException(t_message){};
-  virtual const char* what() const throw() {
-    std::string message_builder = "Napkin RuntimeException: " + message;
-    return message_builder.c_str();
-  }
+  RuntimeException(std::string t_message) : NException(t_message) {
+    std::string message_prefix = "Napkin RuntimeException: ";
+    message = message_prefix + message;
+  };
 };
 
 } // namespace napkin

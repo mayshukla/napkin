@@ -2,7 +2,7 @@
 #define NAPKIN_NOPERATOR_H_
 
 #include "nobject.h"
-#include "RuntimeException.h"
+#include "nexception.h"
 
 /**
  * Defines napkin language operators on NObjects

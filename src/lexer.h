@@ -1,19 +1,13 @@
 #ifndef NAPKIN_LEXER_H_
 #define NAPKIN_LEXER_H_
 
-#include <exception>
 #include <unordered_map>
 #include <vector>
 
 #include "token.h"
+#include "nexception.h"
 
 namespace napkin {
-
-class LexerException: public std::exception {
-  virtual const char* what() const throw() {
-    return "napkin lexer error occured";
-  }
-};
 
 class Lexer {
 public:

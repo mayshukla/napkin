@@ -30,8 +30,8 @@ void Lexer::lexTokens() {
     try {
       lexToken();
     } catch (LexerException& e) {
-      std::cout << "ERROR: unexpected token at line: " << line
-                << " column: " << column << std::endl;
+      const char* str = e.what();
+      std::cout << str << std::endl;
     }
   }
   // Add the EOF token after we reach the end of the source code
@@ -161,7 +161,10 @@ void Lexer::lexToken() {
       } else {
         // If character is not recognized, source contains lexical error
         hadError = true;
-        LexerException lexerException;
+        LexerException lexerException("unexpected token: '" +
+                                      std::string(1, currentChar) +
+                                      "' line: " + std::to_string(line) +
+                                      " column: " + std::to_string(column));
         throw lexerException;
       }
   }
@@ -249,8 +252,7 @@ void Lexer::stringLiteral() {
 
   if (isAtEnd()) {
     hadError = true;
-    std::cout << "ERROR: unterminated string." << std::endl;
-    LexerException lexerException;
+    LexerException lexerException("unterminated string");
     throw lexerException;
   }
 

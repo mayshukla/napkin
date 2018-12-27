@@ -5,7 +5,7 @@
 #include "AST.h"
 #include "nobject.h"
 #include "noperator.h"
-#include "RuntimeException.h"
+#include "nexception.h"
 
 namespace napkin {
 
