@@ -28,28 +28,40 @@ NObject *nAdd(NObject *left, NObject* right) {
   // Left real, right complex
   if (left->getType() == N_REAL_NUMBER &&
       right->getType() == N_COMPLEX_NUMBER) {
-    double result_re =
-        ((NRealNumber *)left)->value + ((NComplexNumber *)right)->re;
-    double result_im = ((NComplexNumber *)right)->im;
+    double left_value = ((NRealNumber *)left)->value;
+    double right_re = ((NComplexNumber *)right)->re;
+    double right_im = ((NComplexNumber *)right)->im;
+
+    double result_re = left_value + right_re;
+    double result_im = right_im;
+
     return new NComplexNumber(result_re, result_im);
   }
 
   // Left complex, right real
   if (left->getType() == N_COMPLEX_NUMBER &&
       right->getType() == N_REAL_NUMBER) {
-    double result_re =
-        ((NComplexNumber *)left)->re + ((NRealNumber *)right)->value;
-    double result_im = ((NComplexNumber *)left)->im;
+    double left_re = ((NComplexNumber *)left)->re;
+    double left_im = ((NComplexNumber *)left)->im;
+    double right_value = ((NRealNumber *)right)->value;
+
+    double result_re = left_re + right_value;
+    double result_im = left_im;
+
     return new NComplexNumber(result_re, result_im);
   }
 
   // Both complex
   if (left->getType() == N_COMPLEX_NUMBER &&
       right->getType() == N_COMPLEX_NUMBER) {
-    double result_re =
-        ((NComplexNumber *)left)->re + ((NComplexNumber *)right)->re;
-    double result_im =
-        ((NComplexNumber *)left)->im + ((NComplexNumber *)right)->im;
+    double left_re = ((NComplexNumber *)left)->re;
+    double left_im = ((NComplexNumber *)left)->im;
+    double right_re = ((NComplexNumber *)right)->re;
+    double right_im = ((NComplexNumber *)right)->im;
+
+    double result_re = left_re + right_re;
+    double result_im = left_im + right_im;
+
     return new NComplexNumber(result_re, result_im);
   }
 
@@ -117,32 +129,40 @@ NObject *nMultiply(NObject *left, NObject *right) {
   // Left real, right complex
   if (left->getType() == N_REAL_NUMBER &&
       right->getType() == N_COMPLEX_NUMBER) {
-    double result_re =
-        ((NRealNumber *)left)->value * ((NComplexNumber *)right)->re;
-    double result_im =
-        ((NRealNumber *)left)->value * ((NComplexNumber *)right)->im;
+    double left_value = ((NRealNumber *)left)->value;
+    double right_re = ((NComplexNumber *)right)->re;
+    double right_im = ((NComplexNumber *)right)->im;
+
+    double result_re = left_value * right_re;
+    double result_im = left_value * right_im;
+
     return new NComplexNumber(result_re, result_im);
   }
 
   // Left complex, right real
   if (left->getType() == N_COMPLEX_NUMBER &&
       right->getType() == N_REAL_NUMBER) {
-    double result_re =
-        ((NComplexNumber *)left)->re * ((NRealNumber *)right)->value;
-    double result_im =
-        ((NComplexNumber *)left)->im * ((NRealNumber *)right)->value;
+    double left_re = ((NComplexNumber *)left)->re;
+    double left_im = ((NComplexNumber *)left)->im;
+    double right_value = ((NRealNumber *)right)->value;
+
+    double result_re = left_re * right_value;
+    double result_im = left_im * right_value;
+
     return new NComplexNumber(result_re, result_im);
   }
 
   // Both complex
   if (left->getType() == N_COMPLEX_NUMBER &&
       right->getType() == N_COMPLEX_NUMBER) {
-    double result_re =
-        ((NComplexNumber *)left)->re * ((NComplexNumber *)right)->re -
-        ((NComplexNumber *)left)->im * ((NComplexNumber *)right)->im;
-    double result_im =
-        ((NComplexNumber *)left)->re * ((NComplexNumber *)right)->im +
-        ((NComplexNumber *)left)->im * ((NComplexNumber *)right)->re;
+    double left_re = ((NComplexNumber *)left)->re;
+    double left_im = ((NComplexNumber *)left)->im;
+    double right_re = ((NComplexNumber *)right)->re;
+    double right_im = ((NComplexNumber *)right)->im;
+
+    double result_re = left_re * right_re - left_im * right_im;
+    double result_im = left_re * right_im + left_im * right_re;
+
     return new NComplexNumber(result_re, result_im);
   }
 
@@ -189,10 +209,13 @@ NObject *nDivide(NObject *left, NObject *right) {
   // Left complex, right real
   if (left->getType() == N_COMPLEX_NUMBER &&
       right->getType() == N_REAL_NUMBER) {
-    double result_re =
-        ((NComplexNumber *)left)->re / ((NRealNumber *)right)->value;
-    double result_im =
-        ((NComplexNumber *)left)->im / ((NRealNumber *)right)->value;
+    double left_re = ((NComplexNumber *)left)->re;
+    double left_im = ((NComplexNumber *)left)->im;
+    double right_value = ((NRealNumber *)right)->value;
+
+    double result_re = left_re / right_value;
+    double result_im = left_im / right_value;
+
     return new NComplexNumber(result_re, result_im);
   }
 
@@ -207,15 +230,15 @@ NObject *nDivide(NObject *left, NObject *right) {
   // Both complex
   if (left->getType() == N_COMPLEX_NUMBER &&
       right->getType() == N_COMPLEX_NUMBER) {
-    double re_left = ((NComplexNumber *)left)->re;
-    double im_left = ((NComplexNumber *)left)->im;
-    double re_right = ((NComplexNumber *)right)->re;
-    double im_right = ((NComplexNumber *)right)->im;
+    double left_re = ((NComplexNumber *)left)->re;
+    double left_im = ((NComplexNumber *)left)->im;
+    double right_re = ((NComplexNumber *)right)->re;
+    double right_im = ((NComplexNumber *)right)->im;
 
-    double result_re = re_left * re_right + im_left * im_right;
-    double result_im = -(re_left * im_right) + (re_right * im_left);
+    double result_re = left_re * right_re + left_im * right_im;
+    double result_im = -(left_re * right_im) + (right_re * left_im);
 
-    double divisor = pow(re_right, 2) + pow(im_right, 2);
+    double divisor = pow(right_re, 2) + pow(right_im, 2);
     result_re = result_re / divisor;
     result_im = result_im / divisor;
 
