@@ -65,6 +65,8 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
     // 'j' may be used as an operator meaning "multiply by j1"
     return nJ(right);
     break;
+  case TOKEN_BANG:
+    return nNot(right);
   default:
     // should be unreachable if parser is set up correctly
     throw "Error: not a unary operator.";
@@ -89,11 +91,14 @@ NObject *Interpreter::visitImaginaryNumber(ImaginaryNumber *expr) {
 }
 
 NObject *Interpreter::visitString(String *expr) {
-  return nullptr;
+  return new NString(expr->token.getLexeme());
 }
 
 NObject *Interpreter::visitBoolean(Boolean *expr) {
-  return nullptr;
+  if (expr->token.getTokenType() == TOKEN_TRUE) {
+    return new NBoolean(true);
+  }
+  return new NBoolean(false);
 }
 
 NObject *Interpreter::visitKeywordConstant(KeywordConstant *expr) {

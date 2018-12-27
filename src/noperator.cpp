@@ -249,4 +249,48 @@ NObject *nDivide(NObject *left, NObject *right) {
   return nullptr;
 }
 
+/**
+ * Returns the logical "not" of an expression
+ * Casts to nBoolean
+ */
+NObject *nNot(NObject *right) {
+  return new NBoolean(!isTruthy(right));
+}
+
+/**
+ * Returns true if a napkin object is considered truthy
+ */
+bool isTruthy(NObject *object) {
+  switch (object->getType()) {
+  case N_REAL_NUMBER:
+    // Only 0 is false
+    if (((NRealNumber *)object)->value == 0) {
+      return false;
+    }
+    return true;
+    break;
+
+  case N_COMPLEX_NUMBER:
+    // Only 0+j0 is false
+    if (((NComplexNumber *)object)->re == 0 &&
+        ((NComplexNumber *)object)->im == 0) {
+      return false;
+    }
+    return true;
+    break;
+
+  case N_BOOLEAN:
+    return ((NBoolean *)object)->value;
+    break;
+
+  case N_STRING:
+    // Empty string is false
+    if (((NString *)object)->value.empty()) {
+      return false;
+    }
+    return true;
+    break;
+  }
+}
+
 } // namespace napkin

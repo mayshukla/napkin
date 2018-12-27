@@ -18,6 +18,8 @@ NObject *nNegate(NObject *right);
 NObject *nMultiply(NObject *left, NObject *right);
 NObject *nJ(NObject *right);
 NObject *nDivide(NObject *left, NObject *right);
+NObject *nNot(NObject *right);
+bool isTruthy(NObject *object);
 
 } // namespace napkin
 

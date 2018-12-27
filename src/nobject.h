@@ -75,6 +75,10 @@ public:
     type = N_BOOLEAN;
   }
   bool value;
+
+  virtual std::string repr() {
+    return (value ? "true" : "false");
+  }
 };
 
 /**
@@ -86,6 +90,10 @@ public:
     type = N_STRING;
   }
   std::string value;
+
+  virtual std::string repr() {
+    return value;
+  }
 };
 
 } // namespace napkin
