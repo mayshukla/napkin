@@ -18,7 +18,7 @@ protected:
 
 class LexerException: public NException {
 public:
-  LexerException(std::string t_message) : NException(t_message){
+  LexerException(std::string t_message) : NException(t_message) {
     std::string message_prefix = "Napkin LexerException: ";
     message = message_prefix + message;
   };

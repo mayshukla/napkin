@@ -146,7 +146,9 @@ void Lexer::lexToken() {
 
     // Imaginary number literals begin with 'j'
     case 'j':
-      if (isDigit(peek(1))) {
+      // Expect a number is the next character is a digit or a minus sign
+      // followed by a digit
+      if (isDigit(peek(1)) || (peek(1) == '-' && isDigit(peek(2)))) {
         imNumber();
       } else {
         identifier();
@@ -194,10 +196,12 @@ void Lexer::number() {
  * Lexes an imaginary number literal
  */
 void Lexer::imNumber() {
-  // TODO: trailing 'j'
-  
   // Consume 'j'
   advance();
+
+  // Consume negative sign if there is one
+  match('-');
+  
   while (isDigit(peek(1))) {
     advance();
   }
@@ -280,6 +284,7 @@ bool Lexer::match(char expected) {
   if (source.at(currentPosition) != expected) return false;
 
   currentPosition++;
+  column++;
   return true;
 }
 

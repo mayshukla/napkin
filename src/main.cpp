@@ -10,13 +10,13 @@
 #include "interpreter.h"
 
 void testInterpreter() {
-  std::string source = " @ j1.23 + 9.7 +2 + j3 \"hello ";
+  std::string source = "j1.23 + 9.7 +2 + -j-3";
 
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();
   for (unsigned int i = 0; i < tokens.size(); i++) {
     std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
-              << " at: " << tokens[i].getColumn() << std::endl;
+              << " line: " << tokens[i].getLine() << " col: " << tokens[i].getColumn() << std::endl;
   }
 
   napkin::Parser parser(tokens);
