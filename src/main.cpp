@@ -19,7 +19,7 @@ void runRepl() {
   while (1) {
     // Display prompt
     std::cout << "> ";
-    std::cin >> source;
+    std::getline(std::cin, source);
 
     // Lex
     napkin::Lexer lexer(source);
@@ -30,7 +30,14 @@ void runRepl() {
 
     // Parse
     napkin::Parser parser(tokens);
-    napkin::Expr *expr = parser.parse();
+    napkin::Expr *expr;
+    try {
+      expr = parser.parse();
+    }
+    catch (napkin::NException &e) {
+      std::cout << e.what() << std::endl;
+      continue;
+    }
     if (parser.hadError) {
       continue;
     }
@@ -132,6 +139,6 @@ void testToken() {
 }
 
 int main() {
-  testInterpreter();
+  runRepl();
   return 0;
 }
