@@ -24,6 +24,10 @@ NObject *nLogicalOr(NObject *left, NObject *right);
 NObject *nLogicalAnd(NObject *left, NObject *right);
 NObject *nLogicalEqual(NObject *left, NObject *right);
 NObject *nLogicalNotEqual(NObject *left, NObject *right);
+NObject *nGreater(NObject *left, NObject *right);
+NObject *nLess(NObject *left, NObject *right);
+NObject *nGreaterEqual(NObject *left, NObject *right);
+NObject *nLessEqual(NObject *left, NObject *right);
 
 // Helpers
 bool isTruthy(NObject *object);

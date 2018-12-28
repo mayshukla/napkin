@@ -347,4 +347,87 @@ NObject *nLogicalNotEqual(NObject *left, NObject *right) {
   return new NBoolean(!areEqual);
 }
 
+/**
+ * Implements napkin '>' operator
+ * Only valid for real numbers
+ */
+NObject *nGreater(NObject *left, NObject *right) {
+  NType left_type = left->getType();
+  NType right_type = right->getType();
+
+  if (left_type == N_COMPLEX_NUMBER || right_type == N_COMPLEX_NUMBER) {
+    throw RuntimeException("'>' operator does not support complex numbers.");
+  }
+  if (left_type != N_REAL_NUMBER || right_type != N_REAL_NUMBER) {
+    throw RuntimeException("invalid operands for '>' operator.");
+  }
+
+  double left_value = ((NRealNumber *)left)->value;
+  double right_value = ((NRealNumber *)right)->value;
+
+  return new NBoolean(left_value > right_value);
+}
+
+/**
+ * Implements napkin '<' operator
+ * Only valid for real numbers
+ */
+NObject *nLess(NObject *left, NObject *right) {
+  NType left_type = left->getType();
+  NType right_type = right->getType();
+
+  if (left_type == N_COMPLEX_NUMBER || right_type == N_COMPLEX_NUMBER) {
+    throw RuntimeException("'<' operator does not support complex numbers.");
+  }
+  if (left_type != N_REAL_NUMBER || right_type != N_REAL_NUMBER) {
+    throw RuntimeException("invalid operands for '<' operator.");
+  }
+
+  double left_value = ((NRealNumber *)left)->value;
+  double right_value = ((NRealNumber *)right)->value;
+
+  return new NBoolean(left_value < right_value);
+}
+
+/**
+ * Implements napkin '>=' operator
+ * Only valid for real numbers
+ */
+NObject *nGreaterEqual(NObject *left, NObject *right) {
+  NType left_type = left->getType();
+  NType right_type = right->getType();
+
+  if (left_type == N_COMPLEX_NUMBER || right_type == N_COMPLEX_NUMBER) {
+    throw RuntimeException("'>=' operator does not support complex numbers.");
+  }
+  if (left_type != N_REAL_NUMBER || right_type != N_REAL_NUMBER) {
+    throw RuntimeException("invalid operands for '>=' operator.");
+  }
+
+  double left_value = ((NRealNumber *)left)->value;
+  double right_value = ((NRealNumber *)right)->value;
+
+  return new NBoolean(left_value >= right_value);
+}
+
+/**
+ * Implements napkin '<=' operator
+ * Only valid for real numbers
+ */
+NObject *nLessEqual(NObject *left, NObject *right) {
+  NType left_type = left->getType();
+  NType right_type = right->getType();
+
+  if (left_type == N_COMPLEX_NUMBER || right_type == N_COMPLEX_NUMBER) {
+    throw RuntimeException("'<=' operator does not support complex numbers.");
+  }
+  if (left_type != N_REAL_NUMBER || right_type != N_REAL_NUMBER) {
+    throw RuntimeException("invalid operands for '<=' operator.");
+  }
+
+  double left_value = ((NRealNumber *)left)->value;
+  double right_value = ((NRealNumber *)right)->value;
+
+  return new NBoolean(left_value <= right_value);
+}
 } // namespace napkin

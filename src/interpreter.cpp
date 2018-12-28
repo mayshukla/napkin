@@ -38,12 +38,16 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     return nLogicalAnd(left, right);
     break;
   case TOKEN_LESS_EQUAL:
+    return nLessEqual(left, right);
     break;
   case TOKEN_GREATER_EQUAL:
+    return nGreaterEqual(left, right);
     break;
   case TOKEN_LESS:
+    return nLess(left, right);
     break;
   case TOKEN_GREATER:
+    return nGreater(left, right);
     break;
   default:
     // should be unreachable if parser is set up correctly
@@ -53,6 +57,7 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
   }
 
   // Unreachable
+  throw ImplementationException("binary operator in switch-case not handled");
   return nullptr;
 }
 

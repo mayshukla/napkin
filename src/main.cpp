@@ -16,7 +16,8 @@ void testInterpreter() {
   //std::string source = "\"\" != !false";
   //std::string source = "false!=true";
   //std::string source = "not not not(0+j0)";
-  std::string source = "0 or 0 == false and 1";
+  //std::string source = "0 or 0 == false and 1";
+  std::string source = "-1 <= 0";
 
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();
