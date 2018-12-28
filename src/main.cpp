@@ -13,8 +13,9 @@ void testInterpreter() {
   //std::string source = "j1.23 + 9.7*2 + -j(-3+j1)";
   //std::string source = "1 + (1+j1.5)*(3-j5)";
   //std::string source = "(1+j1)/2";
-  std::string source = "\"\" != !false";
+  //std::string source = "\"\" != !false";
   //std::string source = "false!=true";
+  std::string source = "!(0+0j)";
 
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();
@@ -25,6 +26,11 @@ void testInterpreter() {
 
   napkin::Parser parser(tokens);
   napkin::Expr *expr = parser.parse();
+
+  if (parser.hadError) {
+    return;
+  }
+
   napkin::ASTPrinter astprinter;
   std::cout << astprinter.visitExpr(expr) << std::endl;
 

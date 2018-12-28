@@ -15,7 +15,14 @@ Expr *Parser::parse() {
 Expr *Parser::expr() {
   // Begin at the rule with lowest precedence.
   // This will change as more rules are added.
-  return equality();
+  try {
+    return equality();
+  }
+  catch (ParserException &e) {
+    std::cout << e.what() << std::endl;
+    hadError = true;
+  }
+  return nullptr;
 }
 
 /**
@@ -141,17 +148,19 @@ Expr* Parser::primary() {
   if (match(TOKEN_LEFT_PAREN)) {
     Expr *_expr = expr();
 
-    if (!match(TOKEN_RIGHT_PAREN)){
-      // TODO: custom exception for syntax errors
-      throw "Syntax error: expected ')' after expression.";
-      return nullptr;
+    if (peek().getTokenType() == TOKEN_J) {
+      throw ParserException("unexpected 'j'. Did you mean to prefix it?");
+    }
+
+    if (!match(TOKEN_RIGHT_PAREN)) {
+      throw ParserException("expected ')' after expression.");
     }
 
     return new Grouping(_expr);
   }
 
   // If we get to here, it means we haven't handled a TokenType
-  throw "Parser error: unhandled TokenType";
+  throw ParserException("unhandled TokenType. That's my bad.");
   return nullptr;
 }
 

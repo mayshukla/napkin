@@ -2,8 +2,10 @@
 #define NAPKIN_PARSER_H_
 
 #include <vector>
+#include <iostream>
 
 #include "AST.h"
+#include "nexception.h"
 #include "token.h"
 
 namespace napkin {
@@ -15,6 +17,7 @@ class Parser {
 public:
   Parser(std::vector<Token> t_tokens) : tokens(t_tokens){};
   Expr *parse();
+  bool hadError;
 
 private:
   std::vector<Token> tokens;
