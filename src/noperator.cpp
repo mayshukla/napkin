@@ -294,6 +294,30 @@ bool isTruthy(NObject *object) {
 }
 
 /**
+ * Returns napkin true if either left or right is truthy.
+ */
+NObject *nLogicalOr(NObject *left, NObject *right) {
+  try {
+    return new NBoolean(isTruthy(left) || isTruthy(right));
+  }
+  catch (RuntimeException &e) {
+    throw RuntimeException("Invalid operands for logical 'or'.");
+  }
+}
+
+/**
+ * Returns napkin true if both left and right are truthy.
+ */
+NObject *nLogicalAnd(NObject *left, NObject *right) {
+  try {
+    return new NBoolean(isTruthy(left) && isTruthy(right));
+  }
+  catch (RuntimeException &e) {
+    throw RuntimeException("Invalid operands for logical 'and'.");
+  }
+}
+
+/**
  * Returns NBoolean with value true if left and right are considered equal
  */
 NObject *nLogicalEqual(NObject *left, NObject *right) {

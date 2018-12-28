@@ -31,6 +31,12 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
   case TOKEN_BANG_EQUAL:
     return nLogicalNotEqual(left, right);
     break;
+  case TOKEN_OR:
+    return nLogicalOr(left, right);
+    break;
+  case TOKEN_AND:
+    return nLogicalAnd(left, right);
+    break;
   case TOKEN_LESS_EQUAL:
     break;
   case TOKEN_GREATER_EQUAL:
@@ -41,7 +47,7 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     break;
   default:
     // should be unreachable if parser is set up correctly
-    throw "Error: not a binary operator.";
+    throw RuntimeException("Error: not a binary operator.");
     return nullptr;
     break;
   }
@@ -69,9 +75,11 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
     break;
   case TOKEN_BANG:
     return nNot(right);
+  case TOKEN_NOT:
+    return nNot(right);
   default:
     // should be unreachable if parser is set up correctly
-    throw "Error: not a unary operator.";
+    throw RuntimeException("Error: not a unary operator.");
     return nullptr;
     break;
   }

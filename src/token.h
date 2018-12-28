@@ -35,10 +35,6 @@ enum TokenType {
   TOKEN_LESS_EQUAL,
   TOKEN_GREATER_EQUAL,
 
-  // Multiple letters
-  TOKEN_TRUE,
-  TOKEN_FALSE,
-
   // Identifiers and literals
   TOKEN_IDENTIFIER,
   TOKEN_NUMBER_LITERAL,
@@ -46,6 +42,11 @@ enum TokenType {
   TOKEN_STRING_LITERAL,
 
   // Keywords
+  TOKEN_TRUE,
+  TOKEN_FALSE,
+  TOKEN_NOT,
+  TOKEN_AND,
+  TOKEN_OR,
   TOKEN_OUTPUT,
   TOKEN_INPUT,
   TOKEN_RETURN,
@@ -68,6 +69,9 @@ public:
       {"j" , TOKEN_J},
       {"true" , TOKEN_TRUE},
       {"false" , TOKEN_FALSE},
+      {"not" , TOKEN_NOT},
+      {"and" , TOKEN_AND},
+      {"or" , TOKEN_OR},
       {"output" , TOKEN_OUTPUT},
       {"input" , TOKEN_INPUT},
       {"return" , TOKEN_RETURN},

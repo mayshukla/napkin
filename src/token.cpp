@@ -80,14 +80,6 @@ std::string tokenTypeAsString(TokenType tokenType) {
     return "TOKEN_GREATER_EQUAL";
     break;
 
-  // Multiple letters
-  case TOKEN_TRUE:
-    return "TOKEN_TRUE";
-    break;
-  case TOKEN_FALSE:
-    return "TOKEN_FALSE";
-    break;
-
   // Identifiers and literals
   case TOKEN_IDENTIFIER:
     return "TOKEN_IDENTIFIER";
@@ -103,6 +95,21 @@ std::string tokenTypeAsString(TokenType tokenType) {
 
     
   // Keywords
+  case TOKEN_TRUE:
+    return "TOKEN_TRUE";
+    break;
+  case TOKEN_FALSE:
+    return "TOKEN_FALSE";
+    break;
+  case TOKEN_NOT:
+    return "TOKEN_NOT";
+    break;
+  case TOKEN_AND:
+    return "TOKEN_AND";
+    break;
+  case TOKEN_OR:
+    return "TOKEN_OR";
+    break;
   case TOKEN_OUTPUT:
     return "TOKEN_OUTPUT";
     break;

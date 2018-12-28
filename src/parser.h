@@ -25,6 +25,8 @@ private:
 
   // Each of these methods correspond to a rule in ebnf.txt
   Expr *expr();
+  Expr *_or();
+  Expr *_and();
   Expr *equality();
   Expr *comparison();
   Expr *addition();

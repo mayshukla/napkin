@@ -16,13 +16,45 @@ Expr *Parser::expr() {
   // Begin at the rule with lowest precedence.
   // This will change as more rules are added.
   try {
-    return equality();
+    return _or();
   }
   catch (ParserException &e) {
     std::cout << e.what() << std::endl;
     hadError = true;
   }
   return nullptr;
+}
+
+/**
+ * Parses logical 'or' expression.
+ */
+Expr *Parser::_or() {
+  Expr *expr = _and();
+
+  while (match(TOKEN_OR)) {
+    Token _operator = previous();
+    Expr *right = _and();
+    // Attach the old expr to the left and the new one to the right
+    expr = new BinaryExpr(_operator, expr, right);
+  }
+
+  return expr;
+}
+
+/**
+ * Parses logical 'and' expression.
+ */
+Expr *Parser::_and() {
+  Expr *expr = equality();
+
+  while (match(TOKEN_AND)) {
+    Token _operator = previous();
+    Expr *right = equality();
+    // Attach the old expr to the left and the new one to the right
+    expr = new BinaryExpr(_operator, expr, right);
+  }
+
+  return expr;
 }
 
 /**
@@ -94,7 +126,7 @@ Expr *Parser::multiplication() {
  * Parses unary expression.
  */
 Expr *Parser::unary() {
-  if (match(TOKEN_MINUS) || match(TOKEN_BANG)) {
+  if (match(TOKEN_MINUS) || match(TOKEN_BANG) || match(TOKEN_NOT)) {
     Token _operator = previous();
     Expr *right = unary();
     Expr *expr = new UnaryExpr(_operator, right);

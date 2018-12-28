@@ -20,6 +20,8 @@ NObject *nMultiply(NObject *left, NObject *right);
 NObject *nJ(NObject *right);
 NObject *nDivide(NObject *left, NObject *right);
 NObject *nNot(NObject *right);
+NObject *nLogicalOr(NObject *left, NObject *right);
+NObject *nLogicalAnd(NObject *left, NObject *right);
 NObject *nLogicalEqual(NObject *left, NObject *right);
 NObject *nLogicalNotEqual(NObject *left, NObject *right);
 

@@ -5,12 +5,15 @@
 # parser.
 
 # Syntax Grammar
-expr = equality
-equality = comparison (("==" | "!=") comparision)*
+expr = or
+or = and ("or" and)*
+and = equality ("and" equality)*
+equality = comparison (("==" | "!=") comparison)*
 comparison = addition (("<=" | ">=" | "<" | ">" addition)*
 addition = multiplication (("+" | "-") multiplication)*
 multiplication = unary (("*" | "/") unary)*
-unary = ("!" | "-" )? unary | primary
+unary = ("!" | "not" | "-" )? unary | primary
+      # note: "not" and "!" are equivalent
 primary = keyword | grouping | literal | identifier
 grouping = "(" expr ")"
 
