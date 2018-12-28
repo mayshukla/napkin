@@ -40,6 +40,17 @@ public:
   };
 };
 
+/**
+ * Indicates that there was an error in implementation, not the user's fault
+ */
+class ImplementationException : public NException {
+public:
+  ImplementationException(std::string t_message) : NException(t_message) {
+    std::string message_prefix = "Napkin ImplementationException: ";
+    message = message_prefix + message;
+  };
+};
+
 } // namespace napkin
 
 #endif

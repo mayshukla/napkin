@@ -47,7 +47,7 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     break;
   default:
     // should be unreachable if parser is set up correctly
-    throw RuntimeException("Error: not a binary operator.");
+    throw ImplementationException("binary operator not handled.");
     return nullptr;
     break;
   }
@@ -79,7 +79,7 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
     return nNot(right);
   default:
     // should be unreachable if parser is set up correctly
-    throw RuntimeException("Error: not a unary operator.");
+    throw ImplementationException("unary operator not handled.");
     return nullptr;
     break;
   }
