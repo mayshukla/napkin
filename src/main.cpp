@@ -9,6 +9,43 @@
 #include "parser.h"
 #include "interpreter.h"
 
+/**
+ * Runs an interactive prompt
+ * doesn't work yet
+ */
+void runRepl() {
+  napkin::Interpreter interpreter;
+  std::string source;
+  while (1) {
+    // Display prompt
+    std::cout << "> ";
+    std::cin >> source;
+
+    // Lex
+    napkin::Lexer lexer(source);
+    std::vector<napkin::Token> tokens = lexer.getTokens();
+    if (!lexer.safeToParse()) {
+      continue;
+    }
+
+    // Parse
+    napkin::Parser parser(tokens);
+    napkin::Expr *expr = parser.parse();
+    if (parser.hadError) {
+      continue;
+    }
+
+    // Interpret and print result
+    try {
+      std::cout << interpreter.visitExpr(expr)->repr() << std::endl;
+    }
+    catch (napkin::RuntimeException &e) {
+      std::cout << e.what() << std::endl;
+      continue;
+    }
+  }
+}
+
 void testInterpreter() {
   //std::string source = "j1.23 + 9.7*2 + -j(-3+j1)";
   //std::string source = "1 + (1+j1.5)*(3-j5)";
@@ -17,7 +54,8 @@ void testInterpreter() {
   //std::string source = "false!=true";
   //std::string source = "not not not(0+j0)";
   //std::string source = "0 or 0 == false and 1";
-  std::string source = "-1 <= 0";
+  //std::string source = "-1 <= 0";
+  std::string source = "1 or 1\n";
 
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();

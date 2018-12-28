@@ -191,8 +191,7 @@ Expr* Parser::primary() {
     return new Grouping(_expr);
   }
 
-  // If we get to here, it means we haven't handled a TokenType
-  throw ParserException("unhandled TokenType. That's my bad.");
+  throw ImplementationException("unhandled TokenType while parsing primary.");
   return nullptr;
 }
 
