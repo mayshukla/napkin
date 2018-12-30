@@ -51,13 +51,13 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
     break;
   default:
     // should be unreachable if parser is set up correctly
-    throw ImplementationException("binary operator not handled.");
+    throw ImplementationException("binary operator not handled in switch.");
     return nullptr;
     break;
   }
 
   // Unreachable
-  throw ImplementationException("binary operator in switch-case not handled");
+  throw ImplementationException("End of switch reached.");
   return nullptr;
 }
 
@@ -90,6 +90,7 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
   }
 
   // Unreachable
+  throw ImplementationException("End of switch reached.");
   return nullptr;
 }
 
@@ -117,6 +118,22 @@ NObject *Interpreter::visitBoolean(Boolean *expr) {
 }
 
 NObject *Interpreter::visitKeywordConstant(KeywordConstant *expr) {
+  TokenType tokenType = expr->token.getTokenType();
+
+  switch (tokenType) {
+    case TOKEN_PI:
+      return new NRealNumber(pi);
+      break;
+    case TOKEN_EULER:
+      return new NRealNumber(euler);
+      break;
+    default:
+      throw ImplementationException("Keyword constant not handled in interpreter.");
+      break;
+  }
+
+  // Unreachable
+  throw ImplementationException("End of switch reached.");
   return nullptr;
 }
 

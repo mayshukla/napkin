@@ -1,11 +1,12 @@
 #ifndef NAPKIN_INTERPRETER_H_
 #define NAPKIN_INTERPRETER_H_
 
-#include "ASTVisitor.h"
 #include "AST.h"
+#include "ASTVisitor.h"
+#include "constants.h"
+#include "nexception.h"
 #include "nobject.h"
 #include "noperator.h"
-#include "nexception.h"
 
 namespace napkin {
 
