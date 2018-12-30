@@ -340,6 +340,10 @@ NObject *nLogicalEqual(NObject *left, NObject *right) {
     }
     return new NBoolean(false);
   }
+
+  // TODO: both numbers
+
+  throw RuntimeException("Invalid operands for '==' operator");
   
   // Unreachable
   return nullptr;
@@ -349,7 +353,13 @@ NObject *nLogicalEqual(NObject *left, NObject *right) {
  * Same as nLogicalEqual
  */
 NObject *nLogicalNotEqual(NObject *left, NObject *right) {
-  NObject *temp_result = nLogicalEqual(left, right);
+  NObject *temp_result;
+  try {
+    temp_result = nLogicalEqual(left, right);
+  }
+  catch (RuntimeException &e) {
+    throw RuntimeException("Invalid operands for '!=' operator");
+  }
   bool areEqual = ((NBoolean *)temp_result)->value;
   return new NBoolean(!areEqual);
 }

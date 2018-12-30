@@ -13,7 +13,6 @@
  * Runs an interactive prompt
  * doesn't work yet
  */
-/*
 void runRepl() {
   napkin::Interpreter interpreter;
   std::string source;
@@ -31,9 +30,9 @@ void runRepl() {
 
     // Parse
     napkin::Parser parser(tokens);
-    napkin::Expr *expr;
+    std::vector<napkin::Stmt *> stmts;
     try {
-      expr = parser.parse();
+      stmts = parser.parse();
     }
     catch (napkin::NException &e) {
       std::cout << e.what() << std::endl;
@@ -45,7 +44,7 @@ void runRepl() {
 
     // Interpret and print result
     try {
-      std::cout << interpreter.visitExpr(expr)->repr() << std::endl;
+      interpreter.interpret(stmts);
     }
     catch (napkin::RuntimeException &e) {
       std::cout << e.what() << std::endl;
@@ -53,7 +52,6 @@ void runRepl() {
     }
   }
 }
-*/
 
 void testInterpreter() {
   std::string source = "j1.23 + 9.7*2 + -j(-3+j1) \n" 
@@ -90,6 +88,6 @@ void testInterpreter() {
 }
 
 int main() {
-  testInterpreter();
+  runRepl();
   return 0;
 }
