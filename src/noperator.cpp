@@ -9,6 +9,13 @@ namespace napkin {
  * Will cast up to complex.
  */
 NObject *nAdd(NObject *left, NObject* right) {
+  // If both operands are strings, do string concatenation
+  if (left->getType() == N_STRING && right->getType() == N_STRING) {
+    std::string leftString = ((NString *)left)->value;
+    std::string rightString = ((NString *)right)->value;
+    return new NString(leftString + rightString);
+  }
+
   // Not a number
   if ((left->getType() != N_REAL_NUMBER &&
        left->getType() != N_COMPLEX_NUMBER) ||
