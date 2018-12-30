@@ -3,10 +3,51 @@
 namespace napkin {
 
 /**
- * Constructs AST and returns root node.
+ * Constructs AST and returns a list of statements.
  */
-Expr *Parser::parse() {
-  return expr();
+std::vector<Stmt *> Parser::parse() {
+  std::vector<Stmt *> stmts;
+  while (!isAtEnd()) {
+    while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+    // Handle an empty line at the end of the file
+    if (tokens[current].getTokenType() == TOKEN_EOF) break;
+    stmts.push_back(stmt());
+  }
+  return stmts;
+}
+
+/**
+ * Parses a statement.
+ */
+Stmt *Parser::stmt() {
+  // Will add more types of statements later
+  if (match(TOKEN_OUTPUT)) {
+    return outputStmt();
+  }
+  // Otherwise it is an expression statement
+  return exprStmt();
+}
+
+/**
+ * Parses expression statement.
+ */
+Stmt *Parser::exprStmt() {
+  Expr *value = expr();
+  if (!match(TOKEN_NEWLINE)) {
+    throw ParserException("expected newline or ';' after expression.");
+  }
+  return new ExprStmt(value);
+}
+
+/**
+ * Parses "output" statement.
+ */
+Stmt *Parser::outputStmt() {
+  Expr *value = expr();
+  if (!match(TOKEN_NEWLINE)) {
+    throw ParserException("expected newline or ';' after expression.");
+  }
+  return new OutputStmt(value);
 }
 
 /**
@@ -152,10 +193,9 @@ Expr* Parser::primary() {
   }
 
   // Keywords that act an unary operators
-  // e.g. "output", "mag"
-  if (match(TOKEN_J) || match(TOKEN_OUTPUT) || match(TOKEN_INPUT) ||
-      match(TOKEN_MAG) || match(TOKEN_RE) || match(TOKEN_IM) ||
-      match(TOKEN_ANGLEOF)) {
+  // e.g. "mag", "re"
+  if (match(TOKEN_J) || match(TOKEN_MAG) || match(TOKEN_RE) ||
+      match(TOKEN_IM) || match(TOKEN_ANGLEOF)) {
     Token _operator = previous();
     // TODO: should this be unary or primary?
     Expr *right = unary();
@@ -191,7 +231,9 @@ Expr* Parser::primary() {
     return new Grouping(_expr);
   }
 
-  throw ImplementationException("unhandled TokenType while parsing primary.");
+  throw ImplementationException("unhandled TokenType: " +
+                                peek().tokenTypeAsString() +
+                                " while parsing primary.");
   return nullptr;
 }
 
@@ -230,7 +272,7 @@ Token Parser::advance() {
  * Returns true if EOF token has been reached.
  */
 bool Parser::isAtEnd() {
-  return peek().getTokenType() == TOKEN_EOF;
+  return tokens[current].getTokenType() == TOKEN_EOF;
 }
 
 /**

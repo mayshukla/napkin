@@ -16,7 +16,7 @@ namespace napkin {
 class Parser {
 public:
   Parser(std::vector<Token> t_tokens) : tokens(t_tokens){};
-  Expr *parse();
+  std::vector<Stmt *> parse();
   bool hadError;
 
 private:
@@ -24,6 +24,10 @@ private:
   unsigned int current = 0; // index of current token
 
   // Each of these methods correspond to a rule in ebnf.txt
+  Stmt *stmt();
+  Stmt *exprStmt();
+  Stmt *outputStmt();
+  
   Expr *expr();
   Expr *_or();
   Expr *_and();

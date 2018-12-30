@@ -15,11 +15,45 @@ namespace napkin {
 
 /**
  * Base class for statements.
- * TODO
  */
 class Stmt {
+public:
+  virtual std::string accept(ASTVisitor<std::string> *visitor) = 0;
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) = 0;
 };
 
+/**
+ * Expression statement
+ */
+
+class ExprStmt : public Stmt {
+public:
+  ExprStmt(Expr *t_expr) : expr(t_expr){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitExprStmt(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitExprStmt(this);
+  }
+
+  Expr *expr; // The expression that forms the statment
+};
+
+/**
+ * Output statement
+ */
+class OutputStmt : public Stmt {
+public:
+  OutputStmt(Expr *t_expr) : expr(t_expr){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitOutputStmt(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitOutputStmt(this);
+  }
+
+  Expr *expr; // The expression to be output
+};
 
 /**
  * Base class for expressions.

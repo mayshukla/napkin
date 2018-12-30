@@ -5,6 +5,14 @@
 # parser.
 
 # Syntax Grammar
+program = stmt* TOKEN_EOF
+
+stmt = exprStmt
+     | outputStmt
+
+exprStmt = expr TOKEN_NEWLINE
+outputStmt = "output" expr TOKEN_NEWLINE
+
 expr = or
 or = and ("or" and)*
 and = equality ("and" equality)*

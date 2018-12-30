@@ -34,8 +34,11 @@ void Lexer::lexTokens() {
       std::cout << str << std::endl;
     }
   }
+  // Add a newline since the parser expects there to be a newline after every
+  // statement
+  addToken(TOKEN_NEWLINE, "");
   // Add the EOF token after we reach the end of the source code
-  tokens.push_back(Token(TOKEN_EOF, "", line, currentPosition));
+  addToken(TOKEN_EOF, "");
 }
 
 /**

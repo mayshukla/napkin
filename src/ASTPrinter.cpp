@@ -2,6 +2,18 @@
 
 namespace napkin {
 
+std::string ASTPrinter::visitStmt(Stmt *stmt) {
+  return stmt->accept(this);
+}
+
+std::string ASTPrinter::visitExprStmt(ExprStmt *stmt) {
+  return "ExprStmt: " + stmt->expr->accept(this) + "\n";
+}
+
+std::string ASTPrinter::visitOutputStmt(OutputStmt *stmt) {
+  return "OutputStmt: " + stmt->expr->accept(this) + "\n";
+}
+
 std::string ASTPrinter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }

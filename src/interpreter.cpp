@@ -2,7 +2,46 @@
 
 namespace napkin {
 
+/**
+ * Executes each statement in a vector of statements
+ */
+void Interpreter::interpret(std::vector<Stmt *> stmts) {
+  for (unsigned int i = 0; i < stmts.size(); i++) {
+    visitStmt(stmts[i]);
+  }
+}
+
+/**
+ * Executes a statement.
+ */
+NObject *Interpreter::visitStmt(Stmt *stmt) {
+  // Make the statement call its specific visit method
+  stmt->accept(this);
+  // Return nullptr since a statement does not produce an object
+  return nullptr;
+}
+
+/**
+ * Executes an expression statement.
+ */
+NObject *Interpreter::visitExprStmt(ExprStmt *stmt) {
+  // Just evaluate that expression
+  return stmt->expr->accept(this);
+}
+
+/**
+ * Executes an "output" statement.
+ */
+NObject *Interpreter::visitOutputStmt(OutputStmt *stmt) {
+  // Evaluate the statement to the right of "output"
+  NObject *result = stmt->expr->accept(this);
+  // Output the string representation of result
+  std::cout << result->repr() << std::endl;
+  return nullptr;
+}
+
 NObject *Interpreter::visitExpr(Expr *expr) {
+  // Make the expression call its specific visit method
   return expr->accept(this);
 }
 
