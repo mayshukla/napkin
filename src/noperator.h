@@ -35,9 +35,9 @@ bool isTruthy(NObject *object);
 
 // Type checking
 bool areRealNumbers(NObject *left, NObject *right);
-bool areNumbers(NObject *left, NObject *right);
+bool areComplexNumbers(NObject *left, NObject *right);
 bool isRealNumber(NObject *object);
-bool isNumber(NObject *object);
+bool isComplexNumber(NObject *object);
 
 } // namespace napkin
 

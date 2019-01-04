@@ -360,7 +360,44 @@ NObject *nLogicalEqual(NObject *left, NObject *right) {
     return new NBoolean(false);
   }
 
-  // TODO: both numbers
+  // Both real numbers
+  if (areRealNumbers(left, right)) {
+    double left_value = ((NRealNumber *)left)->value;
+    double right_value = ((NRealNumber *)right)->value;
+
+    return new NBoolean(left_value == right_value);
+  }
+
+  // Left real, right complex
+  if (left_type == N_REAL_NUMBER && right_type == N_COMPLEX_NUMBER) {
+    double left_value = ((NRealNumber *)left)->value;
+    double right_re = ((NComplexNumber *)right)->re;
+    double right_im = ((NComplexNumber *)right)->im;
+
+    // If complex number has imaginary part, it cannot equal a real number
+    if (right_im != 0) {
+      return new NBoolean(false);
+    }
+
+    return new NBoolean(left_value == right_re);
+  }
+
+  // Left complex, right real
+  if (left_type == N_COMPLEX_NUMBER && right_type == N_REAL_NUMBER) {
+    return nLogicalEqual(right, left);
+  }
+
+  // Both complex
+  if (areComplexNumbers(left, right)) {
+    double left_re = ((NComplexNumber *)left)->re;
+    double left_im = ((NComplexNumber *)left)->im;
+    double right_re = ((NComplexNumber *)right)->re;
+    double right_im = ((NComplexNumber *)right)->im;
+
+    bool result = left_re == right_re && left_im == right_im;
+    
+    return new NBoolean(result);
+  }
 
   throw RuntimeException("Invalid operands for '==' operator");
   
@@ -475,10 +512,10 @@ bool areRealNumbers(NObject *left, NObject *right) {
 }
 
 /**
- * Returns true is left and right are real or complex numbers (any combination).
+ * Returns true is left and right are complex numbers.
  */
-bool areNumbers(NObject *left, NObject *right) {
-  return isNumber(left) && isNumber(right);
+bool areComplexNumbers(NObject *left, NObject *right) {
+  return isComplexNumber(left) && isComplexNumber(right);
 }
 
 /**
@@ -489,11 +526,11 @@ bool isRealNumber(NObject *object) {
 }
 
 /**
- * Returns true if napkin object is a real or complex number.
+ * Returns true if napkin object is a complex number.
  */
-bool isNumber(NObject *object) {
+bool isComplexNumber(NObject *object) {
   NType type = object->getType();
-  return type == N_REAL_NUMBER || type == N_COMPLEX_NUMBER;
+  return type == N_COMPLEX_NUMBER;
 }
 
 } // namespace napkin
