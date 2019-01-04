@@ -121,7 +121,7 @@ Expr *Parser::comparison() {
   Expr *expr = addition();
 
   while (match(TOKEN_LESS_EQUAL) || match(TOKEN_GREATER_EQUAL) ||
-         match(TOKEN_LESS) || match(TOKEN_GREATER) || match(TOKEN_STAR_STAR)) {
+         match(TOKEN_LESS) || match(TOKEN_GREATER)) {
     Token _operator = previous();
     Expr *right = addition();
     // Attach the old expr to the left and the new one to the right
@@ -151,11 +151,27 @@ Expr *Parser::addition() {
  * Parses multiplication expression.
  */
 Expr *Parser::multiplication() {
-  Expr *expr = unary();
+  Expr *expr = exponentiation();
 
   while (match(TOKEN_STAR) || match(TOKEN_SLASH)) {
     Token _operator = previous();
-    Expr *right = unary();
+    Expr *right = exponentiation();
+    // Attach the old expr to the left and the new one to the right
+    expr = new BinaryExpr(_operator, expr, right);
+  }
+
+  return expr;
+}
+
+/**
+ * Parses exponentiation expression.
+ */
+Expr *Parser::exponentiation() {
+  Expr *expr = unary();
+
+  while (match(TOKEN_STAR_STAR)) {
+    Token _operator = previous();
+    Expr *right = exponentiation();
     // Attach the old expr to the left and the new one to the right
     expr = new BinaryExpr(_operator, expr, right);
   }

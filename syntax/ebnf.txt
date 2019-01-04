@@ -19,7 +19,8 @@ and = equality ("and" equality)*
 equality = comparison (("==" | "!=") comparison)*
 comparison = addition (("<=" | ">=" | "<" | ">" addition)*
 addition = multiplication (("+" | "-") multiplication)*
-multiplication = unary (("*" | "/") unary)*
+multiplication = exponentiation (("*" | "/") exponentiation)*
+exponentiation = unary ("**" unary)*
 unary = ("!" | "not" | "-" )? unary | primary
       # note: "not" and "!" are equivalent
 primary = keyword | grouping | literal | identifier

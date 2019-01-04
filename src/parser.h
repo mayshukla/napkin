@@ -35,6 +35,7 @@ private:
   Expr *comparison();
   Expr *addition();
   Expr *multiplication();
+  Expr *exponentiation();
   Expr *unary();
   Expr *primary();
 
