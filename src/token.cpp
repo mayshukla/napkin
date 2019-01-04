@@ -79,6 +79,9 @@ std::string tokenTypeAsString(TokenType tokenType) {
   case TOKEN_GREATER_EQUAL:
     return "TOKEN_GREATER_EQUAL";
     break;
+  case TOKEN_STAR_STAR:
+    return "TOKEN_STAR_STAR";
+    break;
 
   // Identifiers and literals
   case TOKEN_IDENTIFIER:

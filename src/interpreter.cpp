@@ -61,6 +61,9 @@ NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
   case TOKEN_STAR:
     return nMultiply(left, right);
     break;
+  case TOKEN_STAR_STAR:
+    return nPower(left, right);
+    break;
   case TOKEN_SLASH:
     return nDivide(left, right);
     break;

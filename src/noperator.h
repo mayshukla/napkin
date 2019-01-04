@@ -19,6 +19,7 @@ NObject *nNegate(NObject *right);
 NObject *nMultiply(NObject *left, NObject *right);
 NObject *nJ(NObject *right);
 NObject *nDivide(NObject *left, NObject *right);
+NObject *nPower(NObject *left, NObject *right);
 NObject *nNot(NObject *right);
 NObject *nLogicalOr(NObject *left, NObject *right);
 NObject *nLogicalAnd(NObject *left, NObject *right);
@@ -31,6 +32,12 @@ NObject *nLessEqual(NObject *left, NObject *right);
 
 // Helpers
 bool isTruthy(NObject *object);
+
+// Type checking
+bool areRealNumbers(NObject *left, NObject *right);
+bool areNumbers(NObject *left, NObject *right);
+bool isRealNumber(NObject *object);
+bool isNumber(NObject *object);
 
 } // namespace napkin
 

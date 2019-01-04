@@ -121,7 +121,7 @@ Expr *Parser::comparison() {
   Expr *expr = addition();
 
   while (match(TOKEN_LESS_EQUAL) || match(TOKEN_GREATER_EQUAL) ||
-         match(TOKEN_LESS) || match(TOKEN_GREATER)) {
+         match(TOKEN_LESS) || match(TOKEN_GREATER) || match(TOKEN_STAR_STAR)) {
     Token _operator = previous();
     Expr *right = addition();
     // Attach the old expr to the left and the new one to the right

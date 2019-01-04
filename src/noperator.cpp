@@ -257,6 +257,25 @@ NObject *nDivide(NObject *left, NObject *right) {
 }
 
 /**
+ * Raises left to the power of right.
+ * TODO: support exponentiation of complex numbers
+ */
+NObject *nPower(NObject *left, NObject *right) {
+  if (!areRealNumbers(left, right)) {
+    throw RuntimeException("invalid operands for exponentiation.");
+  }
+
+  double left_value = ((NRealNumber *)left)->value;
+  double right_value = ((NRealNumber *)right)->value;
+
+  if (left_value == 0 && right_value == 0) {
+    throw RuntimeException("can't raise zero to the power of zero!");
+  }
+  
+  return new NRealNumber(pow(left_value, right_value));
+}
+
+/**
  * Returns the logical "not" of an expression
  * Casts to nBoolean
  */
@@ -447,4 +466,34 @@ NObject *nLessEqual(NObject *left, NObject *right) {
 
   return new NBoolean(left_value <= right_value);
 }
+
+/**
+ * Returns true is left and right are real numbers.
+ */
+bool areRealNumbers(NObject *left, NObject *right) {
+  return isRealNumber(left) && isRealNumber(right);
+}
+
+/**
+ * Returns true is left and right are real or complex numbers (any combination).
+ */
+bool areNumbers(NObject *left, NObject *right) {
+  return isNumber(left) && isNumber(right);
+}
+
+/**
+ * Returns true if napkin object is a real number.
+ */
+bool isRealNumber(NObject *object) {
+  return object->getType() == N_REAL_NUMBER;
+}
+
+/**
+ * Returns true if napkin object is a real or complex number.
+ */
+bool isNumber(NObject *object) {
+  NType type = object->getType();
+  return type == N_REAL_NUMBER || type == N_COMPLEX_NUMBER;
+}
+
 } // namespace napkin
