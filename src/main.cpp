@@ -1,6 +1,8 @@
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cerrno>
 
 #include "token.h"
 #include "lexer.h"
@@ -51,6 +53,57 @@ void runRepl() {
       continue;
     }
   }
+}
+
+/**
+ * Returns entire contents for file as a std::string
+ * see: http://insanecoding.blogspot.com/2011/11/how-to-read-in-file-in-c.html
+ */
+std::string readFile(std::string fileName) {
+  std::string contents;
+  std::ifstream file;
+  file.open(fileName, std::ios::in | std::ios::binary);
+  if (file) {
+    // Get the length of the file by seeking to the end
+    file.seekg(0, std::ios::end);
+    // Pre-allocate the destination string
+    contents.resize(file.tellg());
+    // Seek back to the beginning and read into 'contents'
+    file.seekg(0, std::ios::beg);
+    file.read(&contents[0], contents.size());
+    file.close();
+    return contents;
+  }
+  throw errno;
+}
+
+/**
+ * Execute napkin source code stored in a file.
+ */
+int runFile(std::string fileName) {
+  std::string source;
+  try {
+    source = readFile(fileName);
+  }
+  catch (int e) {
+    std::cout << "Error: could not open file." << std::endl;
+    return e;
+  }
+
+  napkin::Lexer lexer(source);
+  std::vector<napkin::Token> tokens = lexer.getTokens();
+
+  napkin::Parser parser(tokens);
+  std::vector<napkin::Stmt *> stmts = parser.parse();
+
+  if (parser.hadError) {
+    return errno;
+  }
+
+  napkin::Interpreter interpreter;
+  interpreter.interpret(stmts);
+
+  return 0;
 }
 
 void testInterpreter() {
@@ -111,7 +164,14 @@ void testParser() {
   }
 }
 
-int main() {
-  runRepl();
-  return 0;
+int main(int argc, char *argv[]) {
+  if (argc == 1) {
+    runRepl();
+  } else if (argc == 2) {
+    std::string filename = argv[1];
+    return runFile(filename);
+  } else {
+    std::cout << "Usage: napkin [filename]" << std::endl;
+    return errno;
+  }
 }
