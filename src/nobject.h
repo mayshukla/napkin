@@ -96,6 +96,18 @@ public:
   }
 };
 
+/**
+ * Null type.
+ */
+class NNullType : public NObject {
+public:
+  NNullType() {};
+
+  virtual std::string repr() {
+    return "null";
+  }
+};
+
 } // namespace napkin
 
 #endif

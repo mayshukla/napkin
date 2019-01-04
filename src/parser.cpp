@@ -57,13 +57,30 @@ Expr *Parser::expr() {
   // Begin at the rule with lowest precedence.
   // This will change as more rules are added.
   try {
-    return _or();
+    return assignExpr();
   }
   catch (ParserException &e) {
     std::cout << e.what() << std::endl;
     hadError = true;
   }
   return nullptr;
+}
+
+/**
+ * Parses assignment expression.
+ */
+Expr *Parser::assignExpr() {
+  TokenType next = peek(1).getTokenType();
+  TokenType nextNext = peek(2).getTokenType();
+  if (next == TOKEN_IDENTIFIER && nextNext == TOKEN_EQUAL) {
+    Token name = advance();
+    // Consume '=' token
+    advance();
+    Expr *value = assignExpr();
+    return new AssignExpr(name, value);
+  } else {
+    return _or();
+  }
 }
 
 /**
@@ -247,6 +264,11 @@ Expr* Parser::primary() {
     return new Grouping(_expr);
   }
 
+  // Identifiers
+  if (match(TOKEN_IDENTIFIER)) {
+    return new Identifier(previous());
+  }
+
   throw ImplementationException("unhandled TokenType: " +
                                 peek().tokenTypeAsString() +
                                 " while parsing primary.");
@@ -296,6 +318,13 @@ bool Parser::isAtEnd() {
  */
 Token Parser::peek() {
   return tokens[current];
+}
+
+/**
+ * Returns token 'n' places ahead without incrementing current index.
+ */
+Token Parser::peek(unsigned int n) {
+  return tokens[current + n - 1];
 }
 
 /**

@@ -13,7 +13,13 @@ stmt = exprStmt
 exprStmt = expr TOKEN_NEWLINE
 outputStmt = "output" expr TOKEN_NEWLINE
 
-expr = or
+expr = assignment
+
+# assignment will eventually take a more complicated left hand side
+# note: there is no explicit variable declaration syntax
+assignment = identifier "=" assignment
+	   | or
+
 or = and ("or" and)*
 and = equality ("and" equality)*
 equality = comparison (("==" | "!=") comparison)*

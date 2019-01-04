@@ -7,6 +7,7 @@
 #include "AST.h"
 #include "ASTVisitor.h"
 #include "constants.h"
+#include "environment.h"
 #include "nexception.h"
 #include "nobject.h"
 #include "noperator.h"
@@ -24,6 +25,7 @@ public:
   virtual NObject *visitExprStmt(ExprStmt *stmt);
   virtual NObject *visitOutputStmt(OutputStmt *stmt);
   virtual NObject *visitExpr(Expr *expr);
+  virtual NObject *visitAssignExpr(AssignExpr *expr);
   virtual NObject *visitBinaryExpr(BinaryExpr *expr);
   virtual NObject *visitGrouping(Grouping *expr);
   virtual NObject *visitUnaryExpr(UnaryExpr *expr);
@@ -33,6 +35,10 @@ public:
   virtual NObject *visitString(String *expr);
   virtual NObject *visitBoolean(Boolean *expr);
   virtual NObject *visitKeywordConstant(KeywordConstant *expr);
+
+private:
+  // Global namespace
+  Environment environment; 
 };
 
 } // namespace napkin

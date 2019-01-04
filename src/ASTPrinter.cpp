@@ -18,6 +18,12 @@ std::string ASTPrinter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }
 
+std::string ASTPrinter::visitAssignExpr(AssignExpr *expr) {
+  std::string name = expr->name.getLexeme();
+  std::string value = expr->value->accept(this);
+  return "(assign " + name + " " + value + ")";
+}
+
 std::string ASTPrinter::visitBinaryExpr(BinaryExpr* expr) {
   std::string _operator = expr->_operator.getLexeme();
   std::string left = expr->left->accept(this);

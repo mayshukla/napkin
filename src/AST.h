@@ -65,6 +65,23 @@ public:
 };
 
 /**
+ * Assignment expressions.
+ */
+class AssignExpr : public Expr {
+public:
+  AssignExpr(Token t_name, Expr *t_value) : name(t_name), value(t_value){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitAssignExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitAssignExpr(this);
+  }
+
+  Token name;
+  Expr *value;
+};
+
+/**
  * Base class for binary expressions.
  */
 class BinaryExpr : public Expr {
@@ -84,7 +101,7 @@ public:
 };
 
 /**
- * Paranthesized groups.
+ * Parenthesized groups.
  */
 class Grouping : public Expr {
 public:

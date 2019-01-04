@@ -87,6 +87,30 @@ void testInterpreter() {
   interpreter.interpret(stmts);
 }
 
+void testParser() {
+  std::string source = "foo = bar = 1 + j2";
+
+  napkin::Lexer lexer(source);
+  std::vector<napkin::Token> tokens = lexer.getTokens();
+  for (unsigned int i = 0; i < tokens.size(); i++) {
+    std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
+              << " line: " << tokens[i].getLine()
+              << " col: " << tokens[i].getColumn() << std::endl;
+  }
+
+  napkin::Parser parser(tokens);
+  std::vector<napkin::Stmt *> stmts = parser.parse();
+
+  if (parser.hadError) {
+    return;
+  }
+
+  napkin::ASTPrinter astprinter;
+  for (unsigned int i = 0; i < stmts.size(); i++) {
+    std::cout << astprinter.visitStmt(stmts[i]) << std::endl;
+  }
+}
+
 int main() {
   runRepl();
   return 0;

@@ -29,6 +29,7 @@ private:
   Stmt *outputStmt();
   
   Expr *expr();
+  Expr *assignExpr();
   Expr *_or();
   Expr *_and();
   Expr *equality();
@@ -45,6 +46,7 @@ private:
   Token advance();
   bool isAtEnd();
   Token peek();
+  Token peek(unsigned int n);
   Token previous();
 };
 

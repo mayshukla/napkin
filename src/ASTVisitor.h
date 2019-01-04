@@ -10,6 +10,7 @@ class Stmt;
 class ExprStmt;
 class OutputStmt;
 class Expr;
+class AssignExpr;
 class BinaryExpr;
 class Grouping;
 class UnaryExpr;
@@ -29,6 +30,7 @@ public:
   virtual T visitExprStmt(ExprStmt *stmt) = 0;
   virtual T visitOutputStmt(OutputStmt *stmt) = 0;
   virtual T visitExpr(Expr *expr) = 0;
+  virtual T visitAssignExpr(AssignExpr *expr) = 0;
   virtual T visitBinaryExpr(BinaryExpr *expr) = 0;
   virtual T visitGrouping(Grouping *expr) = 0;
   virtual T visitUnaryExpr(UnaryExpr *expr) = 0;

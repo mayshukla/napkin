@@ -45,6 +45,16 @@ NObject *Interpreter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }
 
+
+NObject *Interpreter::visitAssignExpr(AssignExpr *expr) {
+  NObject *value = expr->value->accept(this);
+  std::string name = expr->name.getLexeme(); 
+  environment.bind(name, value);
+
+  // assignment expressions evaluate to the value assigned
+  return expr->value->accept(this);
+}
+
 NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
   TokenType _operator = expr->_operator.getTokenType();
   NObject *left = expr->left->accept(this);
@@ -137,7 +147,14 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
 }
 
 NObject *Interpreter::visitIdentifier(Identifier *expr) {
-  return nullptr;
+  NObject* value = environment.lookup(expr->token.getLexeme());
+
+  if (value == nullptr) {
+    throw RuntimeException("undefined variable '" + expr->token.getLexeme() +
+                           "'.");
+  }
+
+  return value;
 }
 
 NObject *Interpreter::visitRealNumber(RealNumber *expr) {
