@@ -1,17 +1,18 @@
 # Should output "yes", "yes2", "no", "no2"
 
 foo = true
-if foo {
+if foo
+{
   output "yes"
   output "yes2"
 }
-else {
+else
+{
   output "no"
   output "no2"
 }
 
-foo = false
-if foo {
+if 1 == 1 + j1 {
   output "yes"
   output "yes2"
 }

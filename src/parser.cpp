@@ -81,12 +81,14 @@ std::vector<Stmt *> Parser::blockStmt() {
  */
 Stmt *Parser::ifStmt() {
   Expr *condition = expr();
+  while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
 
   Stmt *thenBranch = stmt();
   Stmt *elseBranch = nullptr;
   // TODO: is there a better way than putting this everywhere?
   while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
   if (match(TOKEN_ELSE)) {
+    while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
     elseBranch = stmt();
   }
 
