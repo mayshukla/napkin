@@ -98,6 +98,24 @@ std::string tokenTypeAsString(TokenType tokenType) {
 
     
   // Keywords
+  case TOKEN_FUN:
+    return "TOKEN_FUN";
+    break;
+  case TOKEN_IF:
+    return "TOKEN_IF";
+    break;
+  case TOKEN_ELSE:
+    return "TOKEN_ELSE";
+    break;
+  case TOKEN_ELIF:
+    return "TOKEN_ELIF";
+    break;
+  case TOKEN_FOR:
+    return "TOKEN_FOR";
+    break;
+  case TOKEN_WHILE:
+    return "TOKEN_WHILE";
+    break;
   case TOKEN_TRUE:
     return "TOKEN_TRUE";
     break;

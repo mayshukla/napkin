@@ -43,6 +43,12 @@ enum TokenType {
   TOKEN_STRING_LITERAL,
 
   // Keywords
+  TOKEN_FUN,
+  TOKEN_IF,
+  TOKEN_ELSE,
+  TOKEN_ELIF,
+  TOKEN_FOR,
+  TOKEN_WHILE,
   TOKEN_TRUE,
   TOKEN_FALSE,
   TOKEN_NOT,
@@ -67,6 +73,12 @@ class KeywordToTokenTypeMap {
 public:
   KeywordToTokenTypeMap() {
     map = {
+      {"fun" , TOKEN_FUN},
+      {"if" , TOKEN_IF},
+      {"else" , TOKEN_ELSE},
+      {"elif" , TOKEN_ELIF},
+      {"for" , TOKEN_FOR},
+      {"while" , TOKEN_WHILE},
       {"j" , TOKEN_J},
       {"true" , TOKEN_TRUE},
       {"false" , TOKEN_FALSE},
