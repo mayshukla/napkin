@@ -2,6 +2,7 @@
 #define NAPKIN_AST_H_
 
 #include <string> // std::stod()
+#include <vector>
 
 #include "token.h"
 #include "ASTVisitor.h"
@@ -53,6 +54,22 @@ public:
   }
 
   Expr *expr; // The expression to be output
+};
+
+/**
+ * Block enclosed by curly braces.
+ */
+class BlockStmt : public Stmt {
+public:
+  BlockStmt(std::vector<Stmt *> t_stmts) : stmts(t_stmts){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitBlockStmt(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitBlockStmt(this);
+  }
+
+  std::vector<Stmt *> stmts;
 };
 
 /**

@@ -24,6 +24,9 @@ Stmt *Parser::stmt() {
   if (match(TOKEN_OUTPUT)) {
     return outputStmt();
   }
+  if (match(TOKEN_LEFT_BRACE)) {
+    return new BlockStmt(blockStmt());
+  }
   // Otherwise it is an expression statement
   return exprStmt();
 }
@@ -48,6 +51,26 @@ Stmt *Parser::outputStmt() {
     throw ParserException("expected newline or ';' after expression.");
   }
   return new OutputStmt(value);
+}
+
+/**
+ * Parses a block statment.
+ */
+std::vector<Stmt *> Parser::blockStmt() {
+  std::vector<Stmt *> stmts;
+
+  // Continue gathering statements to be added to the block until we reach '}'
+  // or end of file
+  while (!check(TOKEN_RIGHT_BRACE) && !isAtEnd()) {
+    while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+    stmts.push_back(stmt());
+  }
+
+  if (!match(TOKEN_RIGHT_BRACE)) {
+    throw ParserException("expected '}' after block.");
+  }
+
+  return stmts;
 }
 
 /**

@@ -14,6 +14,17 @@ std::string ASTPrinter::visitOutputStmt(OutputStmt *stmt) {
   return "OutputStmt: " + stmt->expr->accept(this) + "\n";
 }
 
+std::string ASTPrinter::visitBlockStmt(BlockStmt *stmt) {
+  std::string contents;
+  contents = "{\n";
+  for (unsigned int i = 0; i <  stmt->stmts.size(); i++) {
+    contents += stmt->stmts[i]->accept(this);
+    contents += "\n";
+  }
+  contents += "}\n";
+  return contents;
+}
+
 std::string ASTPrinter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }

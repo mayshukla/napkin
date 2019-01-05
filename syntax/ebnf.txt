@@ -9,9 +9,11 @@ program = stmt* TOKEN_EOF
 
 stmt = exprStmt
      | outputStmt
+     | block
 
 exprStmt = expr TOKEN_NEWLINE
 outputStmt = "output" expr TOKEN_NEWLINE
+block = "{" stmt*"}"
 
 expr = assignment
 

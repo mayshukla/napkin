@@ -1,0 +1,13 @@
+a = "global a"
+b = "global b"
+c = "global c"
+{
+  a = "inner a"
+  b = "inner b"
+  output a
+  output b
+  output c
+}
+output a
+output b
+output c

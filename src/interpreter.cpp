@@ -40,6 +40,41 @@ NObject *Interpreter::visitOutputStmt(OutputStmt *stmt) {
   return nullptr;
 }
 
+/**
+ * Visits a block statement.
+ * Creates a new empty environment with the current environment as the enclosing
+ * environment and passes this new environment to executeBlockStmt
+ */
+NObject *Interpreter::visitBlockStmt(BlockStmt *stmt) {
+  // Constructs a new environment with the current environment as the enclosing
+  // environment
+  executeBlockStmt(stmt, new Environment(environment));
+  return nullptr;
+}
+
+/**
+ * Executes a block statement.
+ * @param stmt The block statement to be executed.
+ * @param environment The environment under which to execute the contents of the
+ *        block statement.
+ */
+void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironment) {
+  // Remembers the current environment
+  Environment previous = this->environment;
+
+  // Sets the current environement to the inner environment
+  this->environment = *innerEnvironment;
+
+  // Executes all statements in the block
+  // TODO: catch exceptions here to ensure the previous environement is restored
+  for (unsigned int i = 0; i < stmt->stmts.size(); i++) {
+    visitStmt(stmt->stmts[i]);
+  }
+
+  // Restores the previous environment
+  this->environment = previous;
+}
+
 NObject *Interpreter::visitExpr(Expr *expr) {
   // Make the expression call its specific visit method
   return expr->accept(this);

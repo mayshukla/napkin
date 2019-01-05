@@ -24,6 +24,7 @@ public:
   virtual NObject *visitStmt(Stmt *stmt);
   virtual NObject *visitExprStmt(ExprStmt *stmt);
   virtual NObject *visitOutputStmt(OutputStmt *stmt);
+  virtual NObject *visitBlockStmt(BlockStmt *stmt);
   virtual NObject *visitExpr(Expr *expr);
   virtual NObject *visitAssignExpr(AssignExpr *expr);
   virtual NObject *visitBinaryExpr(BinaryExpr *expr);
@@ -39,6 +40,7 @@ public:
 private:
   // Global namespace
   Environment environment; 
+  void executeBlockStmt(BlockStmt *stmt, Environment *environment);
 };
 
 } // namespace napkin
