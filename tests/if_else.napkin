@@ -1,0 +1,21 @@
+# Should output "yes", "yes2", "no", "no2"
+
+foo = true
+if foo {
+  output "yes"
+  output "yes2"
+}
+else {
+  output "no"
+  output "no2"
+}
+
+foo = false
+if foo {
+  output "yes"
+  output "yes2"
+}
+else {
+  output "no"
+  output "no2"
+}

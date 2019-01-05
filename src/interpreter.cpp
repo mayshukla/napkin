@@ -75,6 +75,21 @@ void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironmen
   this->environment = previous;
 }
 
+
+/**
+ * Executes if statement.
+ */
+NObject *Interpreter::visitIfStmt(IfStmt *stmt) {
+  // Checks if condition evaluates to true
+  if (isTruthy(stmt->condition->accept(this))) {
+    return stmt->thenBranch->accept(this); 
+  } else if (stmt->elseBranch != nullptr) {
+    // If there is an else clause, execute it
+    return stmt->elseBranch->accept(this); 
+  }
+  return nullptr;
+}
+
 NObject *Interpreter::visitExpr(Expr *expr) {
   // Make the expression call its specific visit method
   return expr->accept(this);

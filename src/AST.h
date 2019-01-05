@@ -72,6 +72,23 @@ public:
   std::vector<Stmt *> stmts;
 };
 
+class IfStmt : public Stmt {
+public:
+  IfStmt(Expr *t_condition, Stmt *t_thenBranch, Stmt *t_elseBranch)
+      : condition(t_condition), thenBranch(t_thenBranch),
+        elseBranch(t_elseBranch) {}
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitIfStmt(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitIfStmt(this);
+  }
+
+  Expr *condition;
+  Stmt *thenBranch;
+  Stmt *elseBranch; // may by nullptr
+};
+
 /**
  * Base class for expressions.
  */

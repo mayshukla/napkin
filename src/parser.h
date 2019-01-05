@@ -28,6 +28,7 @@ private:
   Stmt *exprStmt();
   Stmt *outputStmt();
   std::vector<Stmt *> blockStmt();
+  Stmt *ifStmt();
   
   Expr *expr();
   Expr *assignExpr();

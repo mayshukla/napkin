@@ -27,6 +27,9 @@ Stmt *Parser::stmt() {
   if (match(TOKEN_LEFT_BRACE)) {
     return new BlockStmt(blockStmt());
   }
+  if (match(TOKEN_IF)) {
+    return ifStmt();
+  }
   // Otherwise it is an expression statement
   return exprStmt();
 }
@@ -71,6 +74,23 @@ std::vector<Stmt *> Parser::blockStmt() {
   }
 
   return stmts;
+}
+
+/**
+ * Parses if statment.
+ */
+Stmt *Parser::ifStmt() {
+  Expr *condition = expr();
+
+  Stmt *thenBranch = stmt();
+  Stmt *elseBranch = nullptr;
+  // TODO: is there a better way than putting this everywhere?
+  while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+  if (match(TOKEN_ELSE)) {
+    elseBranch = stmt();
+  }
+
+  return new IfStmt(condition, thenBranch, elseBranch);
 }
 
 /**

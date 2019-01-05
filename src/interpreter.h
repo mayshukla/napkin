@@ -25,6 +25,7 @@ public:
   virtual NObject *visitExprStmt(ExprStmt *stmt);
   virtual NObject *visitOutputStmt(OutputStmt *stmt);
   virtual NObject *visitBlockStmt(BlockStmt *stmt);
+  virtual NObject *visitIfStmt(IfStmt *stmt);
   virtual NObject *visitExpr(Expr *expr);
   virtual NObject *visitAssignExpr(AssignExpr *expr);
   virtual NObject *visitBinaryExpr(BinaryExpr *expr);

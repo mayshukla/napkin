@@ -10,6 +10,7 @@ class Stmt;
 class ExprStmt;
 class OutputStmt;
 class BlockStmt;
+class IfStmt;
 class Expr;
 class AssignExpr;
 class BinaryExpr;
@@ -31,6 +32,7 @@ public:
   virtual T visitExprStmt(ExprStmt *stmt) = 0;
   virtual T visitOutputStmt(OutputStmt *stmt) = 0;
   virtual T visitBlockStmt(BlockStmt *stmt) = 0;
+  virtual T visitIfStmt(IfStmt *stmt) = 0;
   virtual T visitExpr(Expr *expr) = 0;
   virtual T visitAssignExpr(AssignExpr *expr) = 0;
   virtual T visitBinaryExpr(BinaryExpr *expr) = 0;
