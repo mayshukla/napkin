@@ -8,7 +8,7 @@ namespace napkin {
 std::vector<Stmt *> Parser::parse() {
   std::vector<Stmt *> stmts;
   while (!isAtEnd()) {
-    while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+    ignoreNewlines(); // Ignore empty lines
     // Handle an empty line at the end of the file
     if (tokens[current].getTokenType() == TOKEN_EOF) break;
     stmts.push_back(stmt());
@@ -61,7 +61,7 @@ std::vector<Stmt *> Parser::blockStmt() {
   // Continue gathering statements to be added to the block until we reach '}'
   // or end of file
   while (!check(TOKEN_RIGHT_BRACE) && !isAtEnd()) {
-    while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+    ignoreNewlines();
     stmts.push_back(stmt());
   }
 
@@ -77,14 +77,13 @@ std::vector<Stmt *> Parser::blockStmt() {
  */
 Stmt *Parser::ifStmt() {
   Expr *condition = expr();
-  while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+  ignoreNewlines();
 
   Stmt *thenBranch = stmt();
   Stmt *elseBranch = nullptr;
-  // TODO: is there a better way than putting this everywhere?
-  while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+  ignoreNewlines();
   if (match(TOKEN_ELSE)) {
-    while(match(TOKEN_NEWLINE)) {}; // Ignore empty lines
+    ignoreNewlines();
     elseBranch = stmt();
   }
 
@@ -314,6 +313,14 @@ Expr* Parser::primary() {
                                 peek().tokenTypeAsString() +
                                 " while parsing primary.");
   return nullptr;
+}
+
+/**
+ * Ignores (consumes) a group of consecutive newlines.
+ * Can be used to ignore empty lines.
+ */
+void Parser::ignoreNewlines() {
+  while (match(TOKEN_NEWLINE)) {};
 }
 
 /**

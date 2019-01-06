@@ -43,6 +43,7 @@ private:
   Expr *primary();
 
   // Helper methods
+  void ignoreNewlines();
   void checkTerminator();
   bool match(TokenType type);
   bool check(TokenType type);
