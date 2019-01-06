@@ -39,9 +39,7 @@ Stmt *Parser::stmt() {
  */
 Stmt *Parser::exprStmt() {
   Expr *value = expr();
-  if (!match(TOKEN_NEWLINE)) {
-    throw ParserException("expected newline or ';' after expression.");
-  }
+  checkTerminator();
   return new ExprStmt(value);
 }
 
@@ -50,9 +48,7 @@ Stmt *Parser::exprStmt() {
  */
 Stmt *Parser::outputStmt() {
   Expr *value = expr();
-  if (!match(TOKEN_NEWLINE)) {
-    throw ParserException("expected newline or ';' after expression.");
-  }
+  checkTerminator();
   return new OutputStmt(value);
 }
 
@@ -318,6 +314,17 @@ Expr* Parser::primary() {
                                 peek().tokenTypeAsString() +
                                 " while parsing primary.");
   return nullptr;
+}
+
+/**
+ * Checks for valid token to terminate a statment.
+ * If no valid terminator, throws ParserException
+ * Will consume a newline. Does not consume a closing '}'
+ */
+void Parser::checkTerminator() {
+  if (!match(TOKEN_NEWLINE) && !(peek().getTokenType() == (TOKEN_RIGHT_BRACE))) {
+    throw ParserException("expected newline or ';' after expression.");
+  }
 }
 
 /**

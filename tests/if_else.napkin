@@ -1,4 +1,5 @@
-# Should output "yes", "yes2", "no", "no2"
+# Should output "yes", "yes2", "no", "no2", "1.000000"
+# (with no errors)
 
 foo = true
 if foo
@@ -20,3 +21,6 @@ else {
   output "no"
   output "no2"
 }
+
+if foo {-1} # Curly braces required since '-' could be binary operator
+if foo {output 1}
