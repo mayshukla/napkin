@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "nobject.h"
+#include "nexception.h"
 
 namespace napkin {
 
@@ -27,6 +28,9 @@ private:
   // The environment "outside" the current block
   // If lookup fails inside the inner scope, we search incrementally outward
   Environment *enclosing;
+
+  // Helpers
+  bool existsSomewhere(std::string name);
 };
 
 } // namespace napkin

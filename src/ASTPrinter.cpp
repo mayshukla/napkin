@@ -25,6 +25,19 @@ std::string ASTPrinter::visitBlockStmt(BlockStmt *stmt) {
   return contents;
 }
 
+std::string ASTPrinter::visitIfStmt(IfStmt *stmt) {
+  std::string toPrint =
+      "IfStmt: \n    Then: " + stmt->thenBranch->accept(this) + "\n";
+  if (stmt->elseBranch != nullptr) {
+    toPrint += "\n    Else: " + stmt->elseBranch->accept(this) + "\n";
+  }
+  return toPrint;
+}
+
+std::string ASTPrinter::visitWhileStmt(WhileStmt *stmt) {
+  return "WhileStmt: " + stmt->body->accept(this) + "\n";
+}
+
 std::string ASTPrinter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }

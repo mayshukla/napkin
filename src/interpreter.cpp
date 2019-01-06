@@ -2,6 +2,10 @@
 
 namespace napkin {
 
+Interpreter::Interpreter() {
+  environment = new Environment;
+}
+
 /**
  * Executes each statement in a vector of statements
  */
@@ -60,10 +64,10 @@ NObject *Interpreter::visitBlockStmt(BlockStmt *stmt) {
  */
 void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironment) {
   // Remembers the current environment
-  Environment previous = this->environment;
+  Environment *previous = this->environment;
 
   // Sets the current environement to the inner environment
-  this->environment = *innerEnvironment;
+  this->environment = innerEnvironment;
 
   // Executes all statements in the block
   // TODO: catch exceptions here to ensure the previous environement is restored
@@ -74,7 +78,6 @@ void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironmen
   // Restores the previous environment
   this->environment = previous;
 }
-
 
 /**
  * Executes if statement.
@@ -90,6 +93,17 @@ NObject *Interpreter::visitIfStmt(IfStmt *stmt) {
   return nullptr;
 }
 
+/**
+ * Executes while statement.
+ */
+NObject *Interpreter::visitWhileStmt(WhileStmt *stmt) {
+  // While the condition evaluates to true, execute the body
+  while (isTruthy(stmt->condition->accept(this))) {
+    stmt->body->accept(this);
+  }
+  return nullptr;
+}
+
 NObject *Interpreter::visitExpr(Expr *expr) {
   // Make the expression call its specific visit method
   return expr->accept(this);
@@ -99,7 +113,7 @@ NObject *Interpreter::visitExpr(Expr *expr) {
 NObject *Interpreter::visitAssignExpr(AssignExpr *expr) {
   NObject *value = expr->value->accept(this);
   std::string name = expr->name.getLexeme(); 
-  environment.bind(name, value);
+  environment->bind(name, value);
 
   // assignment expressions evaluate to the value assigned
   return expr->value->accept(this);
@@ -197,7 +211,7 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
 }
 
 NObject *Interpreter::visitIdentifier(Identifier *expr) {
-  NObject* value = environment.lookup(expr->token.getLexeme());
+  NObject* value = environment->lookup(expr->token.getLexeme());
 
   if (value == nullptr) {
     throw RuntimeException("undefined variable '" + expr->token.getLexeme() +

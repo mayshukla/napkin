@@ -19,6 +19,8 @@ namespace napkin {
  */
 class Interpreter : public ASTVisitor<NObject *> {
 public:
+  Interpreter();
+
   void interpret(std::vector<Stmt *> stmts);
 
   virtual NObject *visitStmt(Stmt *stmt);
@@ -26,6 +28,7 @@ public:
   virtual NObject *visitOutputStmt(OutputStmt *stmt);
   virtual NObject *visitBlockStmt(BlockStmt *stmt);
   virtual NObject *visitIfStmt(IfStmt *stmt);
+  virtual NObject *visitWhileStmt(WhileStmt *stmt);
   virtual NObject *visitExpr(Expr *expr);
   virtual NObject *visitAssignExpr(AssignExpr *expr);
   virtual NObject *visitBinaryExpr(BinaryExpr *expr);
@@ -39,8 +42,8 @@ public:
   virtual NObject *visitKeywordConstant(KeywordConstant *expr);
 
 private:
-  // Global namespace
-  Environment environment; 
+  // Current scope
+  Environment *environment;
   void executeBlockStmt(BlockStmt *stmt, Environment *environment);
 };
 

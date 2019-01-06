@@ -15,6 +15,8 @@ public:
   virtual std::string visitExprStmt(ExprStmt *stmt);
   virtual std::string visitOutputStmt(OutputStmt *stmt);
   virtual std::string visitBlockStmt(BlockStmt *stmt);
+  virtual std::string visitIfStmt(IfStmt *stmt);
+  virtual std::string visitWhileStmt(WhileStmt *stmt);
   virtual std::string visitExpr(Expr *expr);
   virtual std::string visitAssignExpr(AssignExpr *expr);
   virtual std::string visitBinaryExpr(BinaryExpr *expr);

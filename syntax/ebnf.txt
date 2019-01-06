@@ -11,11 +11,13 @@ stmt = exprStmt
      | outputStmt
      | block
      | ifStmt
+     | whileStmt
 
 exprStmt = expr TOKEN_NEWLINE
 outputStmt = "output" expr TOKEN_NEWLINE
 block = "{" stmt*"}"
 ifStmt = "if" expr stmt ("else" stmt)?
+whileStmt = "while" expr stmt
 
 expr = assignment
 

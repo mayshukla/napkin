@@ -54,9 +54,3 @@ add = lambda x, y : x + y
 xor = lambda a, b : {
       a and not b or not a and b
     }
-
-# Scoping rules
-# - variables are scoped to blocks
-# - if variable has never been declared in current block, will incrementally
-    search outward
-# - assignment expressions always bind/reassign the variable in the current block

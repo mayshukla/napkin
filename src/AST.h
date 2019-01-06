@@ -72,6 +72,9 @@ public:
   std::vector<Stmt *> stmts;
 };
 
+/**
+ * If statement with optional else clause
+ */
 class IfStmt : public Stmt {
 public:
   IfStmt(Expr *t_condition, Stmt *t_thenBranch, Stmt *t_elseBranch)
@@ -87,6 +90,25 @@ public:
   Expr *condition;
   Stmt *thenBranch;
   Stmt *elseBranch; // may by nullptr
+};
+
+/**
+ * While loop.
+ * Can be used to contruct a for loop too
+ */
+class WhileStmt : public Stmt {
+public:
+  WhileStmt(Expr *t_condition, Stmt *t_body)
+      : condition(t_condition), body(t_body) {}
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitWhileStmt(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitWhileStmt(this);
+  }
+
+  Expr *condition;
+  Stmt *body;
 };
 
 /**

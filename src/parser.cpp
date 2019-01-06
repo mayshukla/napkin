@@ -30,6 +30,9 @@ Stmt *Parser::stmt() {
   if (match(TOKEN_IF)) {
     return ifStmt();
   }
+  if (match(TOKEN_WHILE)) {
+    return whileStmt();
+  }
   // Otherwise it is an expression statement
   return exprStmt();
 }
@@ -73,7 +76,7 @@ std::vector<Stmt *> Parser::blockStmt() {
 }
 
 /**
- * Parses if statment.
+ * Parses if statement.
  */
 Stmt *Parser::ifStmt() {
   Expr *condition = expr();
@@ -88,6 +91,18 @@ Stmt *Parser::ifStmt() {
   }
 
   return new IfStmt(condition, thenBranch, elseBranch);
+}
+
+/**
+ * Parses while statement.
+ */
+Stmt *Parser::whileStmt() {
+  Expr *condition = expr();
+  ignoreNewlines();
+
+  Stmt *body = stmt();
+
+  return new WhileStmt(condition, body);
 }
 
 /**
