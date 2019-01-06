@@ -1,0 +1,20 @@
+# Computes the first n numbers in the fibonacci sequence using a while loop
+n = 100
+
+previous_2 = 0
+previous_1 = 1
+current = previous_2 + previous_1
+output previous_2
+output previous_1
+output current
+
+i = 0
+while i < n {
+  previous_2 = previous_1
+  previous_1 = current
+  current = previous_2 + previous_1
+  output current
+  i = i + 1
+}
+
+output "done"
