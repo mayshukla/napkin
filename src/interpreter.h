@@ -30,6 +30,7 @@ public:
   virtual NObject *visitIfStmt(IfStmt *stmt);
   virtual NObject *visitWhileStmt(WhileStmt *stmt);
   virtual NObject *visitExpr(Expr *expr);
+  virtual NObject *visitVarDeclExpr(VarDeclExpr *expr);
   virtual NObject *visitAssignExpr(AssignExpr *expr);
   virtual NObject *visitBinaryExpr(BinaryExpr *expr);
   virtual NObject *visitGrouping(Grouping *expr);

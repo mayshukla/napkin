@@ -121,6 +121,23 @@ public:
 };
 
 /**
+ * Variable declaration expressions.
+ */
+class VarDeclExpr : public Expr {
+public:
+  VarDeclExpr(Token t_name, Expr *t_value) : name(t_name), value(t_value){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitVarDeclExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitVarDeclExpr(this);
+  }
+
+  Token name;
+  Expr *value;
+};
+
+/**
  * Assignment expressions.
  */
 class AssignExpr : public Expr {

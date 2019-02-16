@@ -3,7 +3,7 @@
 j1.23 + 9.7*2 + -j(-3+j1)
 1 + (1+j1.5)*(3-j5)
 (1+j1)/2
-\"\" != !false
+"\" != !false
 false!=true
 not not not(0+j0)
 0 or 0 == false and 1
@@ -11,5 +11,9 @@ not not not(0+j0)
 1 or 1
 
 foo = bar = 1 + j2
+
+{
+  local := 1
+}
 
 ;;;;;; ; output "Hello World!";;;;;;

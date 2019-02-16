@@ -4,6 +4,18 @@
 namespace napkin {
 
 /**
+ * Always creates a new binding in the current scope.
+ * Will throw error if you try to re-declare a variable.
+ */
+void Environment::declareVar(std::string name, NObject *value) {
+  if (map[name] != nullptr) {
+    throw napkin::RuntimeException("variable \"" + name +
+                                   "\" re-declared in scope.");
+  }
+  map[name] = value;
+}
+
+/**
  * Declares a new local binding if there is none, or reassignes a name to a new
  * value.
  */

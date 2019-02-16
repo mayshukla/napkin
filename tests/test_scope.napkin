@@ -1,12 +1,14 @@
 # Scoping rules
 # - variables are scoped to blocks
-# - if variable has never been declared in current block, will incrementally
-#   search outward
-# - when assigning, interpreter will do a similar incremental check to see if
-#   it exists in the current or an outer scope. If this lookup fails, a new
-#   local variable is created
+# - when using a variable as a value, if variable has never been declared in
+#   current block, will incrementally search outward
+# - when assigning with "=", interpreter will do a similar incremental check to
+#   see if it exists in the current or an outer scope. If this lookup fails,
+#   a new local variable is created
+# - ":=" can be used to declare a new variable in the current scope
 
-a = "global a"
+a := "global a"
+#a := "global aA" # error: re-declaration
 b = "global b"
 c = 3
 output a # global a
@@ -15,7 +17,7 @@ output c # 3.000000
 {
   a = "inner a"
   b = "inner b"
-  c = c + 1
+  c := c + 1 # declares new local variable c to be one greater than global c
   d = "local"
   output a # inner a
   output b # inner b
@@ -24,5 +26,5 @@ output c # 3.000000
 }
 output a # inner a
 output b # inner b
-output c # 4.000000
+output c # 3.000000
 #output d # error

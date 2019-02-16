@@ -42,6 +42,12 @@ std::string ASTPrinter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }
 
+std::string ASTPrinter::visitVarDeclExpr(VarDeclExpr *expr) {
+  std::string name = expr->name.getLexeme();
+  std::string value = expr->value->accept(this);
+  return "(VarDeclExpr " + name + " " + value + ")";
+}
+
 std::string ASTPrinter::visitAssignExpr(AssignExpr *expr) {
   std::string name = expr->name.getLexeme();
   std::string value = expr->value->accept(this);

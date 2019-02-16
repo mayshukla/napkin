@@ -109,10 +109,18 @@ NObject *Interpreter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }
 
+NObject *Interpreter::visitVarDeclExpr(VarDeclExpr *expr) {
+  NObject *value = expr->value->accept(this);
+  std::string name = expr->name.getLexeme();
+  environment->declareVar(name, value);
+
+  // assignment expressions evaluate to the value assigned
+  return expr->value->accept(this);
+}
 
 NObject *Interpreter::visitAssignExpr(AssignExpr *expr) {
   NObject *value = expr->value->accept(this);
-  std::string name = expr->name.getLexeme(); 
+  std::string name = expr->name.getLexeme();
   environment->bind(name, value);
 
   // assignment expressions evaluate to the value assigned

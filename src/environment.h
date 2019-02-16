@@ -17,6 +17,7 @@ class Environment {
 public:
   Environment() { enclosing = nullptr; };
   Environment(Environment *t_enclosing) : enclosing(t_enclosing){};
+  void declareVar(std::string name, NObject *value);
   void bind(std::string name, NObject *value);
   NObject *lookup(std::string name);
 private:

@@ -18,6 +18,7 @@ public:
   virtual std::string visitIfStmt(IfStmt *stmt);
   virtual std::string visitWhileStmt(WhileStmt *stmt);
   virtual std::string visitExpr(Expr *expr);
+  virtual std::string visitVarDeclExpr(VarDeclExpr *expr);
   virtual std::string visitAssignExpr(AssignExpr *expr);
   virtual std::string visitBinaryExpr(BinaryExpr *expr);
   virtual std::string visitGrouping(Grouping *expr);

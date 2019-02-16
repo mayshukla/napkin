@@ -34,6 +34,9 @@ std::string tokenTypeAsString(TokenType tokenType) {
     return "TOKEN_COMMA";
     break;
 
+  case TOKEN_COLON_EQUAL:
+    return "TOKEN_COLON_EQUAL";
+    break;
   case TOKEN_EQUAL:
     return "TOKEN_EQUAL";
     break;

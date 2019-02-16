@@ -30,6 +30,7 @@ enum TokenType {
   TOKEN_J, // The imaginary unit
 
   // Few characters
+  TOKEN_COLON_EQUAL,
   TOKEN_EQUAL_EQUAL,
   TOKEN_BANG_EQUAL,
   TOKEN_LESS_EQUAL,

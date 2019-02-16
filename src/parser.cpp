@@ -122,17 +122,25 @@ Expr *Parser::expr() {
 }
 
 /**
- * Parses assignment expression.
+ * Parses assignment and explicit variable declaration expressions.
  */
 Expr *Parser::assignExpr() {
   TokenType next = peek(1).getTokenType();
   TokenType nextNext = peek(2).getTokenType();
-  if (next == TOKEN_IDENTIFIER && nextNext == TOKEN_EQUAL) {
+  if (next == TOKEN_IDENTIFIER &&
+      (nextNext == TOKEN_EQUAL || nextNext == TOKEN_COLON_EQUAL)) {
     Token name = advance();
-    // Consume '=' token
+    // Consume '=' or ':=' token
     advance();
-    Expr *value = assignExpr();
-    return new AssignExpr(name, value);
+    if (nextNext == TOKEN_EQUAL) {
+      Expr *value = assignExpr();
+      return new AssignExpr(name, value);
+    } else if (nextNext == TOKEN_COLON_EQUAL) {
+      Expr *value = assignExpr();
+      return new VarDeclExpr(name, value);
+    } else {
+      throw napkin::ImplementationException("unhandled assignment operator");
+    }
   } else {
     return _or();
   }

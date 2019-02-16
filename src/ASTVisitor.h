@@ -13,6 +13,7 @@ class BlockStmt;
 class IfStmt;
 class WhileStmt;
 class Expr;
+class VarDeclExpr;
 class AssignExpr;
 class BinaryExpr;
 class Grouping;
@@ -36,6 +37,7 @@ public:
   virtual T visitIfStmt(IfStmt *stmt) = 0;
   virtual T visitWhileStmt(WhileStmt *stmt) = 0;
   virtual T visitExpr(Expr *expr) = 0;
+  virtual T visitVarDeclExpr(VarDeclExpr *expr) = 0;
   virtual T visitAssignExpr(AssignExpr *expr) = 0;
   virtual T visitBinaryExpr(BinaryExpr *expr) = 0;
   virtual T visitGrouping(Grouping *expr) = 0;

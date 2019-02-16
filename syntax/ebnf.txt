@@ -22,8 +22,8 @@ whileStmt = "while" expr stmt
 expr = assignment
 
 # assignment will eventually take a more complicated left hand side
-# note: there is no explicit variable declaration syntax
-assignment = identifier "=" assignment
+# note: ":=" will always define a new variable in the current scope
+assignment = identifier (":=" | "=") assignment
 	   | or
 
 or = and ("or" and)*

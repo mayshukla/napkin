@@ -87,6 +87,19 @@ void Lexer::lexToken() {
     case '\t':
       break;
 
+    case ':':
+      if (match('=')) {
+        addToken(TOKEN_COLON_EQUAL,
+                 source.substr(startPosition, currentPosition - startPosition));
+      } else {
+        hadError = true;
+        LexerException lexerException("unexpected token: '" +
+                                      std::string(1, currentChar) +
+                                      "' line: " + std::to_string(line) +
+                                      " column: " + std::to_string(column));
+        throw lexerException;
+      }
+      break;
     case '=':
       if (match('=')) {
         // It is actually a "==" token
