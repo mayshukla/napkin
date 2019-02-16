@@ -1,8 +1,9 @@
+#include <cerrno>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cerrno>
 
 #include "token.h"
 #include "lexer.h"
@@ -79,8 +80,10 @@ std::string readFile(std::string fileName) {
 
 /**
  * Execute napkin source code stored in a file.
+ * @param dumpTokens If true, will print tokens lexed
+ * @param dumpAST If true, will print a representation of the AST
  */
-int runFile(std::string fileName) {
+int runFile(std::string fileName, bool dumpTokens, bool dumpAST) {
   std::string source;
   try {
     source = readFile(fileName);
@@ -92,12 +95,24 @@ int runFile(std::string fileName) {
 
   napkin::Lexer lexer(source);
   std::vector<napkin::Token> tokens = lexer.getTokens();
+  if (dumpTokens) {
+    for (unsigned int i = 0; i < tokens.size(); i++) {
+      std::cout << tokens[i].tokenTypeAsString() << " : "
+                << tokens[i].getLexeme() << " line: " << tokens[i].getLine()
+                << " col: " << tokens[i].getColumn() << std::endl;
+    }
+  }
 
   napkin::Parser parser(tokens);
   std::vector<napkin::Stmt *> stmts = parser.parse();
-
   if (parser.hadError) {
     return errno;
+  }
+  if (dumpAST) {
+    napkin::ASTPrinter astprinter;
+    for (unsigned int i = 0; i < stmts.size(); i++) {
+      std::cout << astprinter.visitStmt(stmts[i]) << std::endl;
+    }
   }
 
   napkin::Interpreter interpreter;
@@ -169,7 +184,24 @@ int main(int argc, char *argv[]) {
     runRepl();
   } else if (argc == 2) {
     std::string filename = argv[1];
-    return runFile(filename);
+    return runFile(filename, false, false);
+  } else if (argc > 2) {
+    std::string filename = argv[1];
+    bool dumpAST = false;
+    bool dumpTokens = false;
+    // Parse command-line flags
+    for (int i = 2; i < argc; i++) {
+      if (std::strcmp(argv[i], "--dump-tokens") == 0) {
+        dumpTokens = true;
+      } else if (std::strcmp(argv[i], "--dump-ast") == 0) {
+        dumpAST = true;
+      } else {
+        std::cout << "Error: unrecognized command line option: " << argv[i]
+                  << std::endl;
+        return errno;
+      }
+    }
+    return runFile(filename, dumpTokens, dumpAST);
   } else {
     std::cout << "Usage: napkin [filename]" << std::endl;
     return errno;
