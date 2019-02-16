@@ -316,6 +316,9 @@ bool isTruthy(NObject *object) {
     }
     return true;
     break;
+  case N_CALLABLE:
+    return true;
+    break;
   }
 }
 

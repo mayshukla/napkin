@@ -3,7 +3,10 @@
 namespace napkin {
 
 Interpreter::Interpreter() {
-  environment = new Environment;
+  globals = new Environment;
+  // Define default global variables
+  globals->bind("millis", new MillisFunction);
+  environment = globals;
 }
 
 /**
@@ -216,6 +219,29 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
   // Unreachable
   throw ImplementationException("End of switch reached.");
   return nullptr;
+}
+
+NObject *Interpreter::visitCallExpr(CallExpr *expr) {
+  // Evaluate the callee
+  NObject *callee = expr->callee->accept(this);
+
+  // Evaluate each argument in order
+  std::vector<NObject *> arguments;
+  for (unsigned long i = 0; i < expr->arguments.size(); i++) {
+    arguments.push_back(expr->arguments[i]->accept(this));
+  }
+
+  if (!(callee->getType() == N_CALLABLE)) {
+    throw RuntimeException("object not callable.");
+  }
+  NCallable *function = (NCallable *)callee;
+  if (arguments.size() != (unsigned long)function->arity()) {
+    throw RuntimeException("expected " + std::to_string(function->arity()) +
+                           " arguments but got " +
+                           std::to_string(arguments.size()) + ".");
+  }
+  // Function call may require interpreter
+  return function->call(this, arguments);
 }
 
 NObject *Interpreter::visitIdentifier(Identifier *expr) {

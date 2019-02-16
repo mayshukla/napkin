@@ -2,12 +2,17 @@
 #define NAPKIN_NOBJECT_H_
 
 #include <string>
+#include <vector>
+
 
 /**
  * C++ representations of objects in the napkin language.
  */
 
 namespace napkin {
+
+// Forward declare Interpreter class
+class Interpreter;
 
 /**
  * All possible types of objects in the napkin language.
@@ -17,6 +22,7 @@ enum NType {
   N_COMPLEX_NUMBER,
   N_BOOLEAN,
   N_STRING,
+  N_CALLABLE,
 };
 
 /**
@@ -94,6 +100,19 @@ public:
   virtual std::string repr() {
     return value;
   }
+};
+
+/**
+ * Base class for callable objects.
+ */
+class NCallable : public NObject {
+public:
+  NCallable() {
+    type = N_CALLABLE;
+  }
+  virtual NObject *call(Interpreter *Interpreter,
+                        std::vector<NObject *> arguments) = 0;
+  virtual int arity() = 0;
 };
 
 /**

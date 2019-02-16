@@ -8,6 +8,7 @@
 #include "ASTVisitor.h"
 #include "constants.h"
 #include "environment.h"
+#include "nativefunction.h"
 #include "nexception.h"
 #include "nobject.h"
 #include "noperator.h"
@@ -35,6 +36,7 @@ public:
   virtual NObject *visitBinaryExpr(BinaryExpr *expr);
   virtual NObject *visitGrouping(Grouping *expr);
   virtual NObject *visitUnaryExpr(UnaryExpr *expr);
+  virtual NObject *visitCallExpr(CallExpr *expr);
   virtual NObject *visitIdentifier(Identifier *expr);
   virtual NObject *visitRealNumber(RealNumber *expr);
   virtual NObject *visitImaginaryNumber(ImaginaryNumber *expr);
@@ -45,6 +47,7 @@ public:
 private:
   // Current scope
   Environment *environment;
+  Environment *globals;
   void executeBlockStmt(BlockStmt *stmt, Environment *environment);
 };
 
