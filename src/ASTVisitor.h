@@ -18,6 +18,7 @@ class AssignExpr;
 class BinaryExpr;
 class Grouping;
 class UnaryExpr;
+class CallExpr;
 class Identifier;
 class RealNumber;
 class ImaginaryNumber;
@@ -42,6 +43,7 @@ public:
   virtual T visitBinaryExpr(BinaryExpr *expr) = 0;
   virtual T visitGrouping(Grouping *expr) = 0;
   virtual T visitUnaryExpr(UnaryExpr *expr) = 0;
+  virtual T visitCallExpr(CallExpr *expr) = 0;
   virtual T visitIdentifier(Identifier *expr) = 0;
   virtual T visitRealNumber(RealNumber *expr) = 0;
   virtual T visitImaginaryNumber(ImaginaryNumber *expr) = 0;

@@ -41,6 +41,8 @@ private:
   Expr *multiplication();
   Expr *exponentiation();
   Expr *unary();
+  Expr *call();
+  Expr *finishCall(Expr *callee);
   Expr *primary();
 
   // Helper methods

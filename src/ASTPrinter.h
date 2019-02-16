@@ -23,6 +23,7 @@ public:
   virtual std::string visitBinaryExpr(BinaryExpr *expr);
   virtual std::string visitGrouping(Grouping *expr);
   virtual std::string visitUnaryExpr(UnaryExpr *expr);
+  virtual std::string visitCallExpr(CallExpr *expr);
   virtual std::string visitIdentifier(Identifier *expr);
   virtual std::string visitRealNumber(RealNumber *expr);
   virtual std::string visitImaginaryNumber(ImaginaryNumber *expr);

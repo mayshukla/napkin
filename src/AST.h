@@ -208,6 +208,25 @@ public:
 };
 
 /**
+ * Function calls
+ */
+class CallExpr : public Expr {
+public:
+  CallExpr(Expr *t_callee, Token t_paren, std::vector<Expr *> t_arguments)
+      : callee(t_callee), paren(t_paren), arguments(t_arguments){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitCallExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitCallExpr(this);
+  }
+
+  Expr *callee;
+  Token paren; // to report location of function call if runtime error
+  std::vector<Expr *> arguments;
+};
+
+/**
  * Identifiers.
  */
 class Identifier : public Expr {

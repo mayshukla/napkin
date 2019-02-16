@@ -35,8 +35,11 @@ multiplication = exponentiation (("*" | "/") exponentiation)*
 exponentiation = unary ("**" unary)*
 unary = ("!" | "not" | "-" )? unary | primary
       # note: "not" and "!" are equivalent
+call = primary ("(" arguments? ")")*
 primary = keyword | grouping | literal | identifier
 grouping = "(" expr ")"
+
+arguments = expression ("," expression)*
 
 # Lexical Grammar
 keyword = "true" | "false" | "output" | "input" | ...

@@ -1,0 +1,2 @@
+# Tests parsing and interpreting function calls
+time(a, b, c, d)

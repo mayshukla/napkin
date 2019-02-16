@@ -270,7 +270,45 @@ Expr *Parser::unary() {
     return expr;
   }
 
-  return primary();
+  return call();
+}
+
+/**
+ * Parses function call.
+ */
+Expr *Parser::call() {
+  // Parse LHS of function call
+  Expr *expr = primary();
+
+  // Allows chaining function calls (if one function returns another function)
+  while (true) {
+    if (match(TOKEN_LEFT_PAREN)) {
+      expr = finishCall(expr);
+    } else {
+      break;
+    }
+  }
+  return expr;
+}
+
+/**
+ * Helper to add argument list to a function call.
+ * @param callee The LHS of a function call
+ */
+Expr *Parser::finishCall(Expr *callee) {
+  std::vector<Expr *> arguments;
+  if (!check(TOKEN_RIGHT_PAREN)) {
+    do {
+      arguments.push_back(expr());
+    } while (match(TOKEN_COMMA));
+  }
+
+  if (check(TOKEN_RIGHT_PAREN)) {
+    Token paren = advance();
+    return new CallExpr(callee, paren, arguments);
+  } else {
+    throw RuntimeException("expected ')' after arguments in function call.");
+  }
 }
 
 /**

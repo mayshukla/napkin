@@ -72,6 +72,20 @@ std::string ASTPrinter::visitUnaryExpr(UnaryExpr *expr) {
   return "(" + _operator + " " + right + ")";
 }
 
+std::string ASTPrinter::visitCallExpr(CallExpr *expr) {
+  std::string result = "(call (";
+  result += expr->callee->accept(this);
+  result += ") (";
+  for (unsigned long i = 0; i < expr->arguments.size(); i++) {
+    result += expr->arguments[i]->accept(this);
+    if (i != expr->arguments.size() - 1) {
+      result += ", ";
+    }
+  }
+  result += "))";
+  return result;
+}
+
 std::string ASTPrinter::visitIdentifier(Identifier *expr) {
   return expr->token.getLexeme();
 }
