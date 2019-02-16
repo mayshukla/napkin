@@ -9,10 +9,10 @@ namespace napkin {
  * Will cast up to complex.
  */
 NObject *nAdd(NObject *left, NObject* right) {
-  // If both operands are strings, do string concatenation
-  if (left->getType() == N_STRING && right->getType() == N_STRING) {
-    std::string leftString = ((NString *)left)->value;
-    std::string rightString = ((NString *)right)->value;
+  // If at least one of the operands are strings, do string concatenation
+  if (left->getType() == N_STRING || right->getType() == N_STRING) {
+    std::string leftString = left->repr();
+    std::string rightString = right->repr();
     return new NString(leftString + rightString);
   }
 

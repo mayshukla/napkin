@@ -1,0 +1,3 @@
+# Tests concatenating to strings using "+"
+output "The number is " + 5
+output 76 + " trombones"
