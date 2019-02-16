@@ -6,6 +6,7 @@ Interpreter::Interpreter() {
   globals = new Environment;
   // Define default global variables
   globals->bind("millis", new MillisFunction);
+  globals->bind("getline", new GetlineFunction);
   environment = globals;
 }
 

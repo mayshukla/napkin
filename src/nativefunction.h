@@ -2,6 +2,7 @@
 #define NAPKIN_NATIVEFUNCTION_H_
 
 #include <chrono>
+#include <iostream>
 
 #include "nobject.h"
 
@@ -31,6 +32,23 @@ public:
     return new NRealNumber(ms);
   }
   virtual std::string repr() { return "<native function millis>"; }
+};
+
+/**
+ * Gets a line of input as a napkin string
+ */
+class GetlineFunction : public NativeFunction {
+public:
+  virtual int arity() {
+    return 0;
+  }
+  virtual NObject *call(Interpreter *interpreter,
+                        std::vector<NObject *> arguments) {
+    std::string input;
+    std::getline(std::cin, input);
+    return new NString(input);
+  }
+  virtual std::string repr() { return "<native function getline>"; }
 };
 
 } // namespace napkin
