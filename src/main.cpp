@@ -116,7 +116,11 @@ int runFile(std::string fileName, bool dumpTokens, bool dumpAST) {
   }
 
   napkin::Interpreter interpreter;
-  interpreter.interpret(stmts);
+  try {
+    interpreter.interpret(stmts);
+  } catch (napkin::RuntimeException &exception) {
+    std::cout << exception.what() << std::endl;
+  }
 
   return 0;
 }
