@@ -121,64 +121,6 @@ int runFile(std::string fileName, bool dumpTokens, bool dumpAST) {
   return 0;
 }
 
-void testInterpreter() {
-  std::string source = "j1.23 + 9.7*2 + -j(-3+j1) \n" 
-      "1 + (1+j1.5)*(3-j5) \n"
-      "(1+j1)/2 \n"
-      "\"\" != !false \n"
-      "false!=true \n"
-      "not not not(0+j0) \n"
-      "0 or 0 == false and 1 \n"
-      "-1 <= 0 \n"
-      "1 or 1 \n \n ;;;;;; ; output \"Hello World!\";;;;;;";
-
-  napkin::Lexer lexer(source);
-  std::vector<napkin::Token> tokens = lexer.getTokens();
-  for (unsigned int i = 0; i < tokens.size(); i++) {
-    std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
-              << " line: " << tokens[i].getLine() << " col: " << tokens[i].getColumn() << std::endl;
-  }
-
-  napkin::Parser parser(tokens);
-  std::vector<napkin::Stmt *> stmts = parser.parse();
-
-  if (parser.hadError) {
-    return;
-  }
-
-  napkin::ASTPrinter astprinter;
-  for (unsigned int i = 0; i < stmts.size(); i++) {
-    std::cout << astprinter.visitStmt(stmts[i]) << std::endl;
-  }
-
-  napkin::Interpreter interpreter;
-  interpreter.interpret(stmts);
-}
-
-void testParser() {
-  std::string source = "foo = bar = 1 + j2";
-
-  napkin::Lexer lexer(source);
-  std::vector<napkin::Token> tokens = lexer.getTokens();
-  for (unsigned int i = 0; i < tokens.size(); i++) {
-    std::cout << tokens[i].tokenTypeAsString() << " : " << tokens[i].getLexeme()
-              << " line: " << tokens[i].getLine()
-              << " col: " << tokens[i].getColumn() << std::endl;
-  }
-
-  napkin::Parser parser(tokens);
-  std::vector<napkin::Stmt *> stmts = parser.parse();
-
-  if (parser.hadError) {
-    return;
-  }
-
-  napkin::ASTPrinter astprinter;
-  for (unsigned int i = 0; i < stmts.size(); i++) {
-    std::cout << astprinter.visitStmt(stmts[i]) << std::endl;
-  }
-}
-
 int main(int argc, char *argv[]) {
   if (argc == 1) {
     runRepl();
