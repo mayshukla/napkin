@@ -115,7 +115,7 @@ NObject *Interpreter::visitVarDeclExpr(VarDeclExpr *expr) {
   environment->declareVar(name, value);
 
   // assignment expressions evaluate to the value assigned
-  return expr->value->accept(this);
+  return value;
 }
 
 NObject *Interpreter::visitAssignExpr(AssignExpr *expr) {
@@ -124,7 +124,7 @@ NObject *Interpreter::visitAssignExpr(AssignExpr *expr) {
   environment->bind(name, value);
 
   // assignment expressions evaluate to the value assigned
-  return expr->value->accept(this);
+  return value;
 }
 
 NObject *Interpreter::visitBinaryExpr(BinaryExpr* expr) {
