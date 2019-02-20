@@ -19,7 +19,10 @@ block = "{" stmt*"}"
 ifStmt = "if" expr stmt ("else" stmt)?
 whileStmt = "while" expr stmt
 
-expr = assignment
+expr = assignment | lambda
+
+lambda = "->" (parameters)? block
+parameters = "(" ")" | "(" identifier ("," identifier)* ")"
 
 # assignment will eventually take a more complicated left hand side
 # note: ":=" will always define a new variable in the current scope

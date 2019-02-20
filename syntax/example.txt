@@ -29,28 +29,10 @@ element = A[0][2]
 # Matrix/vector multiplication
 result = A@v
 
-# OPTION 1: like old javascript, php
 # Functions
-fun add(x, y) = x + y # implicit return for single line functions
-fun multiply(x, y) = {
-  product = x*y
-  return product
-}
-fun fact(n) = {
-  if n == 0 { return 1 }
-  return n * fact(n - 1)
-}
-
-# Anonymous functions
-foo = fun (x, y) {x + y}
-
-# OPTION 2: like ES6
-#Functions
-add = (x, y) => {x + y}
-
-# OPTION 3: like python lambda
-# RHS of ':' takes expr or block
-add = lambda x, y : x + y
-xor = lambda a, b : {
-      a and not b or not a and b
-    }
+# To declare a function, assign a lambda expression to a variable
+printHello = -> {output "hello"}
+# Optional empty brackets
+printHello = -> () {output "hello"}
+# The value of the last stmt is implicitly returned
+add = -> (x, y) {x + y}
