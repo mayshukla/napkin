@@ -17,7 +17,7 @@
  * doesn't work yet
  */
 void runRepl() {
-  napkin::Interpreter interpreter;
+  napkin::Interpreter interpreter(true);
   std::string source;
   while (1) {
     // Display prompt

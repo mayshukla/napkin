@@ -21,7 +21,7 @@ namespace napkin {
  */
 class Interpreter : public ASTVisitor<NObject *> {
 public:
-  Interpreter();
+  Interpreter(bool repl = false);
 
   void interpret(std::vector<Stmt *> stmts);
 
@@ -52,6 +52,9 @@ private:
   // Current scope
   Environment *environment;
   Environment *globals;
+
+  // Whether or not we are running in a repl
+  bool repl;
 };
 
 } // namespace napkin
