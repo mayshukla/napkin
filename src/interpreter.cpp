@@ -2,12 +2,14 @@
 
 namespace napkin {
 
-Interpreter::Interpreter() {
+Interpreter::Interpreter(bool repl) {
   globals = new Environment;
   // Define default global variables
   globals->bind("millis", new MillisFunction);
   globals->bind("getline", new GetlineFunction);
   environment = globals;
+
+  this->repl = repl;
 }
 
 /**
@@ -31,8 +33,15 @@ NObject *Interpreter::visitStmt(Stmt *stmt) {
  * Executes an expression statement.
  */
 NObject *Interpreter::visitExprStmt(ExprStmt *stmt) {
-  // Just evaluate that expression
-  return stmt->expr->accept(this);
+  // If running in repl, print the result
+  // Else, just evaluate that expression
+  if (repl) {
+    NObject *result = stmt->expr->accept(this);
+    std::cout << result->repr() << std::endl;
+    return result;
+  } else {
+    return stmt->expr->accept(this);
+  }
 }
 
 /**
