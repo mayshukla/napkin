@@ -24,9 +24,7 @@ void Interpreter::interpret(std::vector<Stmt *> stmts) {
  */
 NObject *Interpreter::visitStmt(Stmt *stmt) {
   // Make the statement call its specific visit method
-  stmt->accept(this);
-  // Return nullptr since a statement does not produce an object
-  return nullptr;
+  return stmt->accept(this);
 }
 
 /**
@@ -56,8 +54,7 @@ NObject *Interpreter::visitOutputStmt(OutputStmt *stmt) {
 NObject *Interpreter::visitBlockStmt(BlockStmt *stmt) {
   // Constructs a new environment with the current environment as the enclosing
   // environment
-  executeBlockStmt(stmt, new Environment(environment));
-  return nullptr;
+  return executeBlockStmt(stmt, new Environment(environment));
 }
 
 /**
@@ -66,7 +63,8 @@ NObject *Interpreter::visitBlockStmt(BlockStmt *stmt) {
  * @param environment The environment under which to execute the contents of the
  *        block statement.
  */
-void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironment) {
+NObject *Interpreter::executeBlockStmt(BlockStmt *stmt,
+                                       Environment *innerEnvironment) {
   // Remembers the current environment
   Environment *previous = this->environment;
 
@@ -74,13 +72,16 @@ void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironmen
   this->environment = innerEnvironment;
 
   // Executes all statements in the block
+  // Captures the value of the last statement
   // TODO: catch exceptions here to ensure the previous environement is restored
+  NObject *value;
   for (unsigned int i = 0; i < stmt->stmts.size(); i++) {
-    visitStmt(stmt->stmts[i]);
+    value = visitStmt(stmt->stmts[i]);
   }
 
   // Restores the previous environment
   this->environment = previous;
+  return value;
 }
 
 /**
@@ -113,9 +114,11 @@ NObject *Interpreter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }
 
-// TODO
+/**
+ * Creates new NClosure object
+ */
 NObject *Interpreter::visitLambdaExpr(LambdaExpr *expr) {
-  return nullptr;
+  return new NClosure(expr, this->environment);
 }
 
 NObject *Interpreter::visitVarDeclExpr(VarDeclExpr *expr) {

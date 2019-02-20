@@ -9,6 +9,7 @@
 #include "constants.h"
 #include "environment.h"
 #include "nativefunction.h"
+#include "nclosure.h"
 #include "nexception.h"
 #include "nobject.h"
 #include "noperator.h"
@@ -45,11 +46,12 @@ public:
   virtual NObject *visitBoolean(Boolean *expr);
   virtual NObject *visitKeywordConstant(KeywordConstant *expr);
 
+  NObject *executeBlockStmt(BlockStmt *stmt, Environment *environment);
+
 private:
   // Current scope
   Environment *environment;
   Environment *globals;
-  void executeBlockStmt(BlockStmt *stmt, Environment *environment);
 };
 
 } // namespace napkin

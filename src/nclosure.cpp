@@ -16,7 +16,15 @@ NClosure::NClosure(LambdaExpr *t_expr, const Environment *t_environment) {
  */
 NObject *NClosure::call(Interpreter *interpreter,
                         std::vector<NObject *> arguments) {
-  return nullptr;
+  Environment *tempEnvironment = new Environment(this->environment);
+  // Match parameters with arguments
+  for (unsigned long i = 0; i < arguments.size(); i++) {
+    tempEnvironment->declareVar(expr->parameters[i]->token.getLexeme(),
+                                arguments[i]);
+  }
+  NObject *result = interpreter->executeBlockStmt(expr->body, tempEnvironment);
+  delete tempEnvironment;
+  return result;
 }
 
 int NClosure::arity() {

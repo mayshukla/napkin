@@ -1,2 +1,4 @@
 myLambda = -> (x, y) {x + y}
+output myLambda(2,3)
 myLambda = -> {output "hello"}
+myLambda()
