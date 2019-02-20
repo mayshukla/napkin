@@ -121,6 +121,24 @@ public:
 };
 
 /**
+ * Lambda expressions.
+ */
+class LambdaExpr : public Expr {
+public:
+  LambdaExpr(std::vector<Identifier *> t_parameters, BlockStmt *t_body)
+      : parameters(t_parameters), body(t_body){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitLambdaExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitLambdaExpr(this);
+  }
+
+  std::vector<Identifier *> parameters;
+  BlockStmt *body;
+};
+
+/**
  * Variable declaration expressions.
  */
 class VarDeclExpr : public Expr {
