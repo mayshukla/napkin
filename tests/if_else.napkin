@@ -20,6 +20,9 @@ if 1 == 1 + j1 {
 else {
   output "no"
   output "no2"
+  # Check if nesting works
+  if true { output "hi"}
+  else { output "ho"}
 }
 
 if foo {-1} # Curly braces required since '-' could be binary operator

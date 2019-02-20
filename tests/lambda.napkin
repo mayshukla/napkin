@@ -1,4 +1,15 @@
-myLambda = -> (x, y) {x + y}
+myLambda := -> (x, y) {x + y}
 output myLambda(2,3)
+
 myLambda = -> {output "hello"}
 myLambda()
+
+isZero = -> (n) {
+  if n == 0 {
+    true
+  } else {
+    false
+  }
+}
+output isZero(0)
+output isZero(0 + j1)

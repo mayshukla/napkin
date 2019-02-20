@@ -88,6 +88,9 @@ Stmt *Parser::ifStmt() {
   if (match(TOKEN_ELSE)) {
     ignoreNewlines();
     elseBranch = stmt();
+    // If this is omitted, parser will fail when there is an else block at the end of
+    // an outer block
+    ignoreNewlines();
   }
 
   return new IfStmt(condition, thenBranch, elseBranch);
