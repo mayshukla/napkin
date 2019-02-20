@@ -32,6 +32,7 @@ private:
   Stmt *whileStmt();
   
   Expr *expr();
+  Expr *lambdaExpr();
   Expr *assignExpr();
   Expr *_or();
   Expr *_and();

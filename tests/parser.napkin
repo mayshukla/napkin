@@ -16,4 +16,6 @@ foo = bar = 1 + j2
   local := 1
 }
 
+myLambda = -> (x, y) {x + y}
+
 ;;;;;; ; output "Hello World!";;;;;;

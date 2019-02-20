@@ -113,6 +113,11 @@ NObject *Interpreter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }
 
+// TODO
+NObject *Interpreter::visitLambdaExpr(LambdaExpr *expr) {
+  return nullptr;
+}
+
 NObject *Interpreter::visitVarDeclExpr(VarDeclExpr *expr) {
   NObject *value = expr->value->accept(this);
   std::string name = expr->name.getLexeme();
