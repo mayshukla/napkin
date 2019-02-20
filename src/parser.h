@@ -32,6 +32,7 @@ private:
   Stmt *whileStmt();
   
   Expr *expr();
+  Expr *lambdaExpr();
   Expr *assignExpr();
   Expr *_or();
   Expr *_and();
@@ -41,6 +42,8 @@ private:
   Expr *multiplication();
   Expr *exponentiation();
   Expr *unary();
+  Expr *call();
+  Expr *finishCall(Expr *callee);
   Expr *primary();
 
   // Helper methods

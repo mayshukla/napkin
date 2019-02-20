@@ -88,6 +88,9 @@ Stmt *Parser::ifStmt() {
   if (match(TOKEN_ELSE)) {
     ignoreNewlines();
     elseBranch = stmt();
+    // If this is omitted, parser will fail when there is an else block at the end of
+    // an outer block
+    ignoreNewlines();
   }
 
   return new IfStmt(condition, thenBranch, elseBranch);
@@ -112,13 +115,49 @@ Expr *Parser::expr() {
   // Begin at the rule with lowest precedence.
   // This will change as more rules are added.
   try {
-    return assignExpr();
+    if (match(TOKEN_ARROW)) {
+      return lambdaExpr();
+    } else {
+      return assignExpr();
+    }
   }
   catch (ParserException &e) {
     std::cout << e.what() << std::endl;
     hadError = true;
   }
   return nullptr;
+}
+
+/**
+ * Parses lambda expression
+ */
+Expr *Parser::lambdaExpr() {
+  std::vector<Identifier *> parameters;
+  // Parse parameter list
+  // note: list may be empty brackets
+  if (match(TOKEN_LEFT_PAREN)) {
+    if (check(TOKEN_IDENTIFIER)) {
+      parameters.push_back(new Identifier(advance()));
+      while (match(TOKEN_COMMA)) {
+        if (check(TOKEN_IDENTIFIER)) {
+          parameters.push_back(new Identifier(advance()));
+        } else {
+          throw napkin::ParserException(
+              "expected identifier after comma in parameter list.");
+        }
+      }
+    }
+    if (!match(TOKEN_RIGHT_PAREN)) {
+      throw napkin::ParserException(
+          "expected closing ')' after parameter list.");
+    }
+  }
+
+  if (!match(TOKEN_LEFT_BRACE)) {
+    throw napkin::ParserException("expected opening '{' for lambda body.");
+  }
+  BlockStmt *body = new BlockStmt(blockStmt());
+  return new LambdaExpr(parameters, body);
 }
 
 /**
@@ -133,10 +172,10 @@ Expr *Parser::assignExpr() {
     // Consume '=' or ':=' token
     advance();
     if (nextNext == TOKEN_EQUAL) {
-      Expr *value = assignExpr();
+      Expr *value = expr();
       return new AssignExpr(name, value);
     } else if (nextNext == TOKEN_COLON_EQUAL) {
-      Expr *value = assignExpr();
+      Expr *value = expr();
       return new VarDeclExpr(name, value);
     } else {
       throw napkin::ImplementationException("unhandled assignment operator");
@@ -270,7 +309,45 @@ Expr *Parser::unary() {
     return expr;
   }
 
-  return primary();
+  return call();
+}
+
+/**
+ * Parses function call.
+ */
+Expr *Parser::call() {
+  // Parse LHS of function call
+  Expr *expr = primary();
+
+  // Allows chaining function calls (if one function returns another function)
+  while (true) {
+    if (match(TOKEN_LEFT_PAREN)) {
+      expr = finishCall(expr);
+    } else {
+      break;
+    }
+  }
+  return expr;
+}
+
+/**
+ * Helper to add argument list to a function call.
+ * @param callee The LHS of a function call
+ */
+Expr *Parser::finishCall(Expr *callee) {
+  std::vector<Expr *> arguments;
+  if (!check(TOKEN_RIGHT_PAREN)) {
+    do {
+      arguments.push_back(expr());
+    } while (match(TOKEN_COMMA));
+  }
+
+  if (check(TOKEN_RIGHT_PAREN)) {
+    Token paren = advance();
+    return new CallExpr(callee, paren, arguments);
+  } else {
+    throw RuntimeException("expected ')' after arguments in function call.");
+  }
 }
 
 /**

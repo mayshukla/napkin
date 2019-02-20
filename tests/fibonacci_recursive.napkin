@@ -1,0 +1,21 @@
+fib_base := -> (self, n) {
+  if n == 0 { 0 }
+  else {
+    if n == 1 { 1 }
+    else {
+      self(self, n - 1) + self(self, n - 2)
+    }
+  }
+}
+
+fib_combinator := -> (aFunction) {
+  -> (n) { aFunction(aFunction, n) }
+}
+
+fib := fib_combinator(fib_base)
+
+i := 0
+while i <= 20 {
+  output fib(i)
+  i = i + 1
+}

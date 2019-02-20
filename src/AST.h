@@ -121,6 +121,24 @@ public:
 };
 
 /**
+ * Lambda expressions.
+ */
+class LambdaExpr : public Expr {
+public:
+  LambdaExpr(std::vector<Identifier *> t_parameters, BlockStmt *t_body)
+      : parameters(t_parameters), body(t_body){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitLambdaExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitLambdaExpr(this);
+  }
+
+  std::vector<Identifier *> parameters;
+  BlockStmt *body;
+};
+
+/**
  * Variable declaration expressions.
  */
 class VarDeclExpr : public Expr {
@@ -205,6 +223,25 @@ public:
 
   Token _operator;
   Expr *right;
+};
+
+/**
+ * Function calls
+ */
+class CallExpr : public Expr {
+public:
+  CallExpr(Expr *t_callee, Token t_paren, std::vector<Expr *> t_arguments)
+      : callee(t_callee), paren(t_paren), arguments(t_arguments){};
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitCallExpr(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitCallExpr(this);
+  }
+
+  Expr *callee;
+  Token paren; // to report location of function call if runtime error
+  std::vector<Expr *> arguments;
 };
 
 /**

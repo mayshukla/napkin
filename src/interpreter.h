@@ -8,6 +8,8 @@
 #include "ASTVisitor.h"
 #include "constants.h"
 #include "environment.h"
+#include "nativefunction.h"
+#include "nclosure.h"
 #include "nexception.h"
 #include "nobject.h"
 #include "noperator.h"
@@ -30,11 +32,13 @@ public:
   virtual NObject *visitIfStmt(IfStmt *stmt);
   virtual NObject *visitWhileStmt(WhileStmt *stmt);
   virtual NObject *visitExpr(Expr *expr);
+  virtual NObject *visitLambdaExpr(LambdaExpr *expr);
   virtual NObject *visitVarDeclExpr(VarDeclExpr *expr);
   virtual NObject *visitAssignExpr(AssignExpr *expr);
   virtual NObject *visitBinaryExpr(BinaryExpr *expr);
   virtual NObject *visitGrouping(Grouping *expr);
   virtual NObject *visitUnaryExpr(UnaryExpr *expr);
+  virtual NObject *visitCallExpr(CallExpr *expr);
   virtual NObject *visitIdentifier(Identifier *expr);
   virtual NObject *visitRealNumber(RealNumber *expr);
   virtual NObject *visitImaginaryNumber(ImaginaryNumber *expr);
@@ -42,10 +46,12 @@ public:
   virtual NObject *visitBoolean(Boolean *expr);
   virtual NObject *visitKeywordConstant(KeywordConstant *expr);
 
+  NObject *executeBlockStmt(BlockStmt *stmt, Environment *environment);
+
 private:
   // Current scope
   Environment *environment;
-  void executeBlockStmt(BlockStmt *stmt, Environment *environment);
+  Environment *globals;
 };
 
 } // namespace napkin

@@ -140,7 +140,13 @@ void Lexer::lexToken() {
       addToken(TOKEN_PLUS, std::string(1, currentChar));
       break;
     case '-':
-      addToken(TOKEN_MINUS, std::string(1, currentChar));
+      if (match('>')) {
+        // It is actually a "->" token
+        addToken(TOKEN_ARROW,
+                 source.substr(startPosition, currentPosition - startPosition));
+      } else {
+        addToken(TOKEN_MINUS, std::string(1, currentChar));
+      }
       break;
     case '*':
       if (match('*')) {

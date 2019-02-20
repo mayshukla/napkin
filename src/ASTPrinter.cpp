@@ -42,6 +42,10 @@ std::string ASTPrinter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }
 
+std::string ASTPrinter::visitLambdaExpr(LambdaExpr *expr) {
+  return "LambdaExpr: " + expr->body->accept(this) + "\n";
+}
+
 std::string ASTPrinter::visitVarDeclExpr(VarDeclExpr *expr) {
   std::string name = expr->name.getLexeme();
   std::string value = expr->value->accept(this);
@@ -70,6 +74,20 @@ std::string ASTPrinter::visitUnaryExpr(UnaryExpr *expr) {
   std::string _operator = expr->_operator.getLexeme();
   std::string right = expr->right->accept(this);
   return "(" + _operator + " " + right + ")";
+}
+
+std::string ASTPrinter::visitCallExpr(CallExpr *expr) {
+  std::string result = "(call (";
+  result += expr->callee->accept(this);
+  result += ") (";
+  for (unsigned long i = 0; i < expr->arguments.size(); i++) {
+    result += expr->arguments[i]->accept(this);
+    if (i != expr->arguments.size() - 1) {
+      result += ", ";
+    }
+  }
+  result += "))";
+  return result;
 }
 
 std::string ASTPrinter::visitIdentifier(Identifier *expr) {

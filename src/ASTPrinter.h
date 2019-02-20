@@ -18,11 +18,13 @@ public:
   virtual std::string visitIfStmt(IfStmt *stmt);
   virtual std::string visitWhileStmt(WhileStmt *stmt);
   virtual std::string visitExpr(Expr *expr);
+  virtual std::string visitLambdaExpr(LambdaExpr *expr);
   virtual std::string visitVarDeclExpr(VarDeclExpr *expr);
   virtual std::string visitAssignExpr(AssignExpr *expr);
   virtual std::string visitBinaryExpr(BinaryExpr *expr);
   virtual std::string visitGrouping(Grouping *expr);
   virtual std::string visitUnaryExpr(UnaryExpr *expr);
+  virtual std::string visitCallExpr(CallExpr *expr);
   virtual std::string visitIdentifier(Identifier *expr);
   virtual std::string visitRealNumber(RealNumber *expr);
   virtual std::string visitImaginaryNumber(ImaginaryNumber *expr);

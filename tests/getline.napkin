@@ -1,0 +1,4 @@
+# Tests native getline function
+output "What is your name?"
+name := getline()
+output "Howdy, " + name + "!"

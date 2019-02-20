@@ -3,7 +3,11 @@
 namespace napkin {
 
 Interpreter::Interpreter() {
-  environment = new Environment;
+  globals = new Environment;
+  // Define default global variables
+  globals->bind("millis", new MillisFunction);
+  globals->bind("getline", new GetlineFunction);
+  environment = globals;
 }
 
 /**
@@ -20,9 +24,7 @@ void Interpreter::interpret(std::vector<Stmt *> stmts) {
  */
 NObject *Interpreter::visitStmt(Stmt *stmt) {
   // Make the statement call its specific visit method
-  stmt->accept(this);
-  // Return nullptr since a statement does not produce an object
-  return nullptr;
+  return stmt->accept(this);
 }
 
 /**
@@ -52,8 +54,7 @@ NObject *Interpreter::visitOutputStmt(OutputStmt *stmt) {
 NObject *Interpreter::visitBlockStmt(BlockStmt *stmt) {
   // Constructs a new environment with the current environment as the enclosing
   // environment
-  executeBlockStmt(stmt, new Environment(environment));
-  return nullptr;
+  return executeBlockStmt(stmt, new Environment(environment));
 }
 
 /**
@@ -62,7 +63,8 @@ NObject *Interpreter::visitBlockStmt(BlockStmt *stmt) {
  * @param environment The environment under which to execute the contents of the
  *        block statement.
  */
-void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironment) {
+NObject *Interpreter::executeBlockStmt(BlockStmt *stmt,
+                                       Environment *innerEnvironment) {
   // Remembers the current environment
   Environment *previous = this->environment;
 
@@ -70,13 +72,16 @@ void Interpreter::executeBlockStmt(BlockStmt *stmt, Environment *innerEnvironmen
   this->environment = innerEnvironment;
 
   // Executes all statements in the block
+  // Captures the value of the last statement
   // TODO: catch exceptions here to ensure the previous environement is restored
+  NObject *value;
   for (unsigned int i = 0; i < stmt->stmts.size(); i++) {
-    visitStmt(stmt->stmts[i]);
+    value = visitStmt(stmt->stmts[i]);
   }
 
   // Restores the previous environment
   this->environment = previous;
+  return value;
 }
 
 /**
@@ -107,6 +112,13 @@ NObject *Interpreter::visitWhileStmt(WhileStmt *stmt) {
 NObject *Interpreter::visitExpr(Expr *expr) {
   // Make the expression call its specific visit method
   return expr->accept(this);
+}
+
+/**
+ * Creates new NClosure object
+ */
+NObject *Interpreter::visitLambdaExpr(LambdaExpr *expr) {
+  return new NClosure(expr, this->environment);
 }
 
 NObject *Interpreter::visitVarDeclExpr(VarDeclExpr *expr) {
@@ -216,6 +228,29 @@ NObject *Interpreter::visitUnaryExpr(UnaryExpr *expr) {
   // Unreachable
   throw ImplementationException("End of switch reached.");
   return nullptr;
+}
+
+NObject *Interpreter::visitCallExpr(CallExpr *expr) {
+  // Evaluate the callee
+  NObject *callee = expr->callee->accept(this);
+
+  // Evaluate each argument in order
+  std::vector<NObject *> arguments;
+  for (unsigned long i = 0; i < expr->arguments.size(); i++) {
+    arguments.push_back(expr->arguments[i]->accept(this));
+  }
+
+  if (!(callee->getType() == N_CALLABLE)) {
+    throw RuntimeException("object not callable.");
+  }
+  NCallable *function = (NCallable *)callee;
+  if (arguments.size() != (unsigned long)function->arity()) {
+    throw RuntimeException("expected " + std::to_string(function->arity()) +
+                           " arguments but got " +
+                           std::to_string(arguments.size()) + ".");
+  }
+  // Function call may require interpreter
+  return function->call(this, arguments);
 }
 
 NObject *Interpreter::visitIdentifier(Identifier *expr) {
