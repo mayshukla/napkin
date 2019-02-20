@@ -7,6 +7,8 @@ Interpreter::Interpreter(bool repl) {
   // Define default global variables
   globals->bind("millis", new MillisFunction);
   globals->bind("getline", new GetlineFunction);
+  globals->bind("exit", new ExitFunction);
+  globals->bind("exit_status", new ExitStatusFunction);
   environment = globals;
 
   this->repl = repl;
