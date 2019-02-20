@@ -110,7 +110,7 @@ public:
   NCallable() {
     type = N_CALLABLE;
   }
-  virtual NObject *call(Interpreter *Interpreter,
+  virtual NObject *call(Interpreter *interpreter,
                         std::vector<NObject *> arguments) = 0;
   virtual int arity() = 0;
 };
