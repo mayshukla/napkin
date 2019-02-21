@@ -39,7 +39,9 @@ NObject *Interpreter::visitExprStmt(ExprStmt *stmt) {
   // Else, just evaluate that expression
   if (repl) {
     NObject *result = stmt->expr->accept(this);
-    std::cout << result->repr() << std::endl;
+    if (result != nullptr) {
+      std::cout << result->repr() << std::endl;
+    }
     return result;
   } else {
     return stmt->expr->accept(this);
