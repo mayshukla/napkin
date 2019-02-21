@@ -1,0 +1,17 @@
+fib_base := -> (self, n) {
+  if n == 0 { return 0 }
+  if n == 1 { return 1 }
+  return self(self, n - 1) + self(self, n - 2)
+}
+
+fib_combinator := -> (aFunction) {
+  -> (n) { aFunction(aFunction, n) }
+}
+
+fib := fib_combinator(fib_base)
+
+i := 0
+while i <= 20 {
+  output fib(i)
+  i = i + 1
+}
