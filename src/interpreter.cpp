@@ -92,7 +92,9 @@ NObject *Interpreter::executeBlockStmt(BlockStmt *stmt,
   // Captures the value of the last statement
   // Note: we must catch exceptions here to ensure the previous environement is
   // restored. Especially for ReturnExceptions
-  NObject *value;
+  // Note: we must initialize value to nullptr in case there are no statements
+  // in stmt->stmts to execute and the assignment inside the for loop never runs
+  NObject *value = nullptr;
   try {
     for (unsigned int i = 0; i < stmt->stmts.size(); i++) {
       value = visitStmt(stmt->stmts[i]);

@@ -2,5 +2,7 @@
 
 foo := -> { return 1 }
 bar := -> { return } # this is tricky to parse
+baz := -> {}
 output foo()
 output bar()
+output baz()
