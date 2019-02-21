@@ -12,12 +12,14 @@ stmt = exprStmt
      | block
      | ifStmt
      | whileStmt
+     | returnStmt
 
 exprStmt = expr TOKEN_NEWLINE
 outputStmt = "output" expr TOKEN_NEWLINE
 block = "{" stmt*"}"
 ifStmt = "if" expr stmt ("else" stmt)?
 whileStmt = "while" expr stmt
+returnStmt = "return" (expr)?
 
 expr = assignment | lambda
 
