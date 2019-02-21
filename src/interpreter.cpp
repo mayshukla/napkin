@@ -90,10 +90,20 @@ NObject *Interpreter::executeBlockStmt(BlockStmt *stmt,
 
   // Executes all statements in the block
   // Captures the value of the last statement
-  // TODO: catch exceptions here to ensure the previous environement is restored
+  // Note: we must catch exceptions here to ensure the previous environement is
+  // restored. Especially for ReturnExceptions
   NObject *value;
-  for (unsigned int i = 0; i < stmt->stmts.size(); i++) {
-    value = visitStmt(stmt->stmts[i]);
+  try {
+    for (unsigned int i = 0; i < stmt->stmts.size(); i++) {
+      value = visitStmt(stmt->stmts[i]);
+    }
+  }
+  catch (ReturnException exception) {
+    this->environment = previous;
+    throw std::move(exception);
+  } catch (RuntimeException exception) {
+    this->environment = previous;
+    throw std::move(exception);
   }
 
   // Restores the previous environment
