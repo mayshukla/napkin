@@ -15,7 +15,9 @@ namespace napkin {
  */
 class Parser {
 public:
-  Parser(std::vector<Token> t_tokens) : tokens(t_tokens){};
+  Parser(std::vector<Token> t_tokens) : tokens(t_tokens) {
+    hadError = false;
+  };
   std::vector<Stmt *> parse();
   bool hadError;
 
