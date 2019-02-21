@@ -1,0 +1,6 @@
+# Testing return statments
+
+foo := -> { return 1 }
+bar := -> { return } # this is tricky to parse
+output bar()
+output foo()

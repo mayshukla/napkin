@@ -30,6 +30,7 @@ private:
   std::vector<Stmt *> blockStmt();
   Stmt *ifStmt();
   Stmt *whileStmt();
+  Stmt *returnStmt();
   
   Expr *expr();
   Expr *lambdaExpr();

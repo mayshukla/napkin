@@ -22,7 +22,16 @@ NObject *NClosure::call(Interpreter *interpreter,
     tempEnvironment->declareVar(expr->parameters[i]->token.getLexeme(),
                                 arguments[i]);
   }
-  NObject *result = interpreter->executeBlockStmt(expr->body, tempEnvironment);
+
+  // Either get the resulting value from executing to the end of the block stmt
+  // or from a return stmt that throws a ReturnException
+  NObject *result = nullptr;
+  try {
+    result = interpreter->executeBlockStmt(expr->body, tempEnvironment);
+  } catch (ReturnException returnValue) {
+    result = returnValue.value;
+  }
+
   delete tempEnvironment;
   return result;
 }

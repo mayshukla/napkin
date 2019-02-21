@@ -38,6 +38,10 @@ std::string ASTPrinter::visitWhileStmt(WhileStmt *stmt) {
   return "WhileStmt: " + stmt->body->accept(this) + "\n";
 }
 
+std::string ASTPrinter::visitReturnStmt(ReturnStmt *stmt) {
+  return "ReturnStmt: " + stmt->value->accept(this) + "\n";
+}
+
 std::string ASTPrinter::visitExpr(Expr *expr) {
   return expr->accept(this);
 }

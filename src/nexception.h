@@ -4,6 +4,8 @@
 #include <exception>
 #include <string>
 
+#include "nobject.h"
+
 namespace napkin {
 
 class NException : public std::exception {
@@ -38,6 +40,20 @@ public:
     std::string message_prefix = "Napkin RuntimeException: ";
     message = message_prefix + message;
   };
+};
+
+/**
+ * Used to jump through C++ call stack to return from a C++ function
+ * @param t_value The value (a napkin object) to be returned
+ */
+class ReturnException : public RuntimeException {
+public:
+  ReturnException(NObject *t_value)
+      : RuntimeException(
+            "Napkin ReturnException: returned from outside a function."),
+        value(t_value){};
+
+  NObject *value;
 };
 
 /**

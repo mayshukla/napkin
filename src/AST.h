@@ -112,6 +112,24 @@ public:
 };
 
 /**
+ * Return statment.
+ */
+class ReturnStmt : public Stmt {
+public:
+  ReturnStmt(Token t_keyword, Expr* t_value)
+      : keyword(t_keyword), value(t_value) {}
+  virtual std::string accept(ASTVisitor<std::string> *visitor) {
+    return visitor->visitReturnStmt(this);
+  }
+  virtual NObject *accept(ASTVisitor<NObject *> *visitor) {
+    return visitor->visitReturnStmt(this);
+  }
+
+  Token keyword; // Store the "return" token for error reporting
+  Expr *value; // The value to be returned
+};
+
+/**
  * Base class for expressions.
  */
 class Expr {

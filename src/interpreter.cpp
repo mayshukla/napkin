@@ -54,8 +54,12 @@ NObject *Interpreter::visitExprStmt(ExprStmt *stmt) {
 NObject *Interpreter::visitOutputStmt(OutputStmt *stmt) {
   // Evaluate the statement to the right of "output"
   NObject *result = stmt->expr->accept(this);
-  // Output the string representation of result
-  std::cout << result->repr() << std::endl;
+  if (result != nullptr) {
+    // Output the string representation of result
+    std::cout << result->repr() << std::endl;
+  } else {
+    std::cout << "nil" << std::endl;
+  }
   return nullptr;
 }
 
@@ -120,6 +124,20 @@ NObject *Interpreter::visitWhileStmt(WhileStmt *stmt) {
     stmt->body->accept(this);
   }
   return nullptr;
+}
+
+/**
+ * Executes return statement.
+ * TODO
+ */
+NObject *Interpreter::visitReturnStmt(ReturnStmt *stmt) {
+  NObject *value = nullptr;
+  if (stmt->value != nullptr) {
+    // Evaluate the value to the right of "return"
+    value = stmt->value->accept(this);
+  }
+  // Should be caught at callsite
+  throw ReturnException(value);
 }
 
 NObject *Interpreter::visitExpr(Expr *expr) {

@@ -33,6 +33,9 @@ Stmt *Parser::stmt() {
   if (match(TOKEN_WHILE)) {
     return whileStmt();
   }
+  if (match(TOKEN_RETURN)) {
+    return returnStmt();
+  }
   // Otherwise it is an expression statement
   return exprStmt();
 }
@@ -106,6 +109,23 @@ Stmt *Parser::whileStmt() {
   Stmt *body = stmt();
 
   return new WhileStmt(condition, body);
+}
+
+/**
+ * Parses return statement.
+ */
+Stmt *Parser::returnStmt() {
+  Token keyword = previous();
+
+  // Value is optional
+  Expr *value = nullptr;
+  if (!check(TOKEN_NEWLINE) && !check(TOKEN_RIGHT_BRACE)) {
+    value = expr();
+  }
+  ignoreNewlines();
+  checkTerminator();
+
+  return new ReturnStmt(keyword, value);
 }
 
 /**

@@ -31,6 +31,7 @@ public:
   virtual NObject *visitBlockStmt(BlockStmt *stmt);
   virtual NObject *visitIfStmt(IfStmt *stmt);
   virtual NObject *visitWhileStmt(WhileStmt *stmt);
+  virtual NObject *visitReturnStmt(ReturnStmt *stmt);
   virtual NObject *visitExpr(Expr *expr);
   virtual NObject *visitLambdaExpr(LambdaExpr *expr);
   virtual NObject *visitVarDeclExpr(VarDeclExpr *expr);
