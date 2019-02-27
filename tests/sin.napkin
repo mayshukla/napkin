@@ -1,0 +1,27 @@
+fac := -> (n) {
+  i := 1
+  accum := 1
+  while i <= n {
+    accum = accum * i
+    i = i + 1
+  }
+  return accum
+}
+
+sin = -> (x) {
+  i := 0
+  accum = 0
+  while i <= 100 {
+    accum = accum + (-1)**(i) * x**(2*i+1) / fac(2*i + 1)
+    i = i + 1
+  }
+  return accum
+}
+
+cos = -> (x) {
+  sin(x + pi/2)
+}
+
+output sin(pi/4)
+output cos(0)
+output sin(pi/4)**2 + cos(pi/4)**2
